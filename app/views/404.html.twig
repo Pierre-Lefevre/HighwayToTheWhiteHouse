@@ -1,0 +1,21 @@
+{% extends "full_layout.html.twig" %}
+
+{% block title %}404{% endblock %}
+
+{% block idMain %}main-404{% endblock %}
+
+{% block main %}
+	<article class="bloc-default {% if constant('MODE_DEV') == false %} public {% endif %}">
+		{% if constant('MODE_DEV') == false %}
+			<p>404</p>
+			<h2>La page demandée n'existe pas.</h2>
+			<h3>John Travolta en reste bouche bée !</h3>
+			<figure>
+				<img src="{{ constant('DS') }}{{ constant('BASE_DIR') }}{{ constant('DS') }}assets{{ constant('DS') }}img{{ constant('DS') }}john_travolta.gif" alt="John Travolta">
+			</figure>
+		{% else %}
+			<h2>Error</h2>
+			<p>{{ errors|raw }}</p>
+		{% endif %}
+	</article>
+{% endblock %}

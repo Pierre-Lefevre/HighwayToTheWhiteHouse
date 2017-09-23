@@ -1,0 +1,241 @@
+/***** Général *****/
+@import url('https://fonts.googleapis.com/css?family=Raleway:300,400,500,600,700,800,900');
+
+html, body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Raleway', sans-serif;
+    font-weight: 400;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+h2 {
+    padding: 20px;
+}
+
+p, ul {
+    margin: 0;
+}
+
+ul {
+    padding: 0;
+}
+
+#container {
+    display: flex;
+    flex-direction: row;
+}
+
+.progress-bar {
+    width: 2px;
+    height: 0vh;
+    position: fixed;
+    background-color: #45B27C;
+    z-index: 11;
+}
+
+/***** Menu principal *****/
+
+.main-nav {
+    background-color: #2C3E50;
+    /*
+        box-shadow: 0px 0px 20px 1px rgba(0, 0, 0, 0.2), inset 0px 0px 2px 1px #fff;
+    */
+    width: 300px;
+    height: 100vh;
+    position: fixed;
+    z-index: 2;
+}
+
+.main-nav > a {
+    display: block;
+    text-align: center;
+    padding: 50px;
+}
+
+.slanted-div {
+    width: 20vw;
+    height: 120%;
+    background-color: #434e58;
+    z-index: -1;
+    -moz-transform: skewY(-6deg);
+    -ms-transform: skewY(-6deg);
+    -o-transform: skewY(-6deg);
+    transform: skewY(-6deg);
+}
+
+.slanted-div-inner {
+    transform: skewY(6deg);
+    padding-top: 0.5rem;
+}
+
+/***** Logo *****/
+
+.main-nav img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.main-nav ul {
+    list-style-type: none;
+    text-transform: uppercase;
+    padding: 0 50px 50px;
+}
+
+.main-nav li {
+    margin-bottom: 1rem;
+    text-align: left;
+}
+
+li.btn-inscription, li.btn-punditer {
+    text-align: center;
+}
+
+/***** Bouton donner avis *****/
+
+li.btn-punditer a {
+    margin: 2rem 0 0.5rem 0;
+    background-color: #45B27C;
+    padding: 1rem;
+    border-radius: 6px;
+    color: white;
+    display: block;
+    vertical-align: middle;
+    -webkit-transform: perspective(1px) translateZ(0);
+    transform: perspective(1px) translateZ(0);
+    -webkit-transition-duration: 0.3s;
+    transition-duration: 0.3s;
+    -webkit-transition-property: transform;
+    transition-property: transform;
+}
+
+li.btn-punditer a:hover, li.btn-inscription a:hover {
+    transform: scale(1.1);
+}
+
+.main-nav a {
+    color: #bbcbd3;
+    text-decoration: none;
+}
+
+.main-nav a:hover {
+    color: white;
+}
+
+li.btn-inscription a {
+    margin: 0 0 2rem 0;
+    background-color: #65C6BB;
+    padding: 1rem;
+    border-radius: 6px;
+    color: white;
+    vertical-align: middle;
+    display: block;
+    -webkit-transform: perspective(1px) translateZ(0);
+    transform: perspective(1px) translateZ(0);
+    -webkit-transition-duration: 0.3s;
+    transition-duration: 0.3s;
+    -webkit-transition-property: transform;
+    transition-property: transform;
+}
+
+/***** Contenu principal *****/
+
+main {
+    background-color: #f0f3f5;
+    margin-left: 300px;
+    width: calc(100vw - 300px);
+    min-height: 100vh;
+}
+
+/***** Barre de critères *****/
+
+.filters-nav {
+    width: 100%;
+    height: 10vh;
+    position: fixed;
+    z-index: 1;
+    background-color: #f0f3f5;
+    border-bottom: 1px solid #d1d7dc;
+    box-shadow: 0px 0px 20px 1px rgba(0, 0, 0, 0.2);
+}
+
+/***** Masonry *****/
+
+.facts {
+    padding: calc(10vh + 2rem) 2rem 2rem 2rem;
+    column-count: 3;
+    column-gap: 2rem;
+}
+
+.fact {
+    padding: 1rem;
+    border: 1px solid #d1d7dc;
+    background-color: #fff;
+    border-radius: 6px;
+    width: 100%;
+    margin-bottom: 2rem;
+    -webkit-transition-duration: 0.5s;
+    transition-duration: 0.5s;
+    -webkit-transition-property: box-shadow;
+    transition-property: box-shadow;
+}
+
+.fact:hover {
+    box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), inset 0 0 2px 1px #fff;
+}
+
+.fact h3 {
+    color: #4e5968;
+    text-transform: uppercase;
+}
+
+.fact img {
+    width: 100%;
+    border-radius: 6px;
+}
+
+.fact a {
+    color: #4e5968;
+    text-decoration: none;
+}
+
+.btn-block {
+    display: block;
+    width: 100%;
+}
+
+.btn-group-lg > .btn, .btn-lg {
+    padding: .75rem 1.5rem;
+    font-size: 1.25rem;
+    border-radius: .3rem;
+}
+
+.btn-primary {
+    color: #fff;
+    background-color: #45B27C;
+    border-color: #45B27C;
+}
+
+.btn {
+    display: inline-block;
+    font-weight: 400;
+    line-height: 1.25;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    border: 1px solid transparent;
+    padding: .5rem 1rem;
+    font-size: 1rem;
+    border-radius: .25rem;
+    -webkit-transition: all .2s ease-in-out;
+    -o-transition: all .2s ease-in-out;
+    transition: all .2s ease-in-out;
+}

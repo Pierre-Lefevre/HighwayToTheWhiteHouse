@@ -1,0 +1,1 @@
+solr-6.6.0\bin\solr create -c highway_to_the_white_house

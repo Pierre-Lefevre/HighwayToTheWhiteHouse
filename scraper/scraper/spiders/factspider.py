@@ -1,0 +1,32 @@
+# -*- coding: utf-8 -*-
+# scrapy crawl factspider -o items.json -t json
+
+import scrapy
+from urllib.parse import urlparse
+from os.path import splitext, basename
+from scrapy.loader import ItemLoader
+from scraper.items import FactItem
+
+class Factspider(scrapy.Spider):
+	name = 'factspider'
+	start_urls = ['http://www.politifact.com/truth-o-meter/statements/']
+
+	def parse(self, response):
+		for current_fact in response.xpath('//div[contains(concat(" ", @class, " "), " scoretable__item ")]'):
+			fact = FactItem()
+			fact["author"] = current_fact.xpath('.//div[contains(concat(" ", @class, " "), " statement__source ")]/a/text()').extract_first().strip()
+			fact["statement"] = current_fact.xpath('.//p[contains(concat(" ", @class, " "), " statement__text ")]/a/text()').extract_first().strip()
+			fact["source"] = current_fact.xpath('.//p[contains(concat(" ", @class, " "), " statement__edition ")]/a/text()').extract_first().replace(u'\u2014', '').strip()
+			fact["date"] = current_fact.xpath('.//p[contains(concat(" ", @class, " "), " statement__edition ")]/span[contains(concat(" ", @class, " "), " article__meta ")]/text()').extract_first().strip()
+			fact["meter"] = current_fact.xpath('.//div[contains(concat(" ", @class, " "), " meter ")]//img/@alt').extract_first().lower().replace(" ", "_").replace("-", "_").replace("!", "").strip()
+			fact["extra"] = current_fact.xpath('.//div[contains(concat(" ", @class, " "), " meter ")]/p[contains(concat(" ", @class, " "), " quote ")]/text()').extract_first().strip()
+			fact["url"] = 'www.politifact.com' + current_fact.xpath('.//p[contains(concat(" ", @class, " "), " statement__text ")]/a/@href').extract_first().strip()
+			src = current_fact.xpath('.//div[contains(concat(" ", @class, " "), " mugshot ")]//img/@src').extract()
+			fact["image_urls"] = src
+			filename, file_ext = splitext(basename(urlparse(src[0]).path))
+			fact["image_name"] = filename
+			yield fact
+
+		url = response.xpath('//a[contains(concat(" ", @class, " "), " step-links__next ")]/@href').extract_first().strip()
+		if url is not None:
+			yield scrapy.Request(response.urljoin(url), callback=self.parse)

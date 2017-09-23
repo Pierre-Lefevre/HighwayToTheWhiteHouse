@@ -1,0 +1,1 @@
+start "" "http://localhost:8983/solr/highway_to_the_white_house/update?commit=true&stream.body=<delete><query>*%3A*</query></delete>"
