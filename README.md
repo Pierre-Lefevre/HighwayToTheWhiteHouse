@@ -10,7 +10,7 @@
 
 ## Lancement du serveur Node.js
 
-- Lancez : `cd app`*
+- Lancez : `cd app`**
 - Pour installer les dépendances, lancez : `npm install`
 - Pour démarrer le serveur Node.js, lancez : `npm run start`
 - L'application est visible à l'adresse : http://localhost:8080/
