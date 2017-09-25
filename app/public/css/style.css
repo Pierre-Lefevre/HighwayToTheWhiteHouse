@@ -24,6 +24,16 @@ ul {
     padding: 0;
 }
 
+input[type=text] {
+    width: 130px;
+    -webkit-transition: width 0.4s ease-in-out;
+    transition: width 0.4s ease-in-out;
+}
+
+input[type=text]:focus {
+    width: 100%;
+}
+
 #container {
     display: flex;
     flex-direction: row;

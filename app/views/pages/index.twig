@@ -1,0 +1,23 @@
+{% extends './base.twig' %}
+
+{% block body %}
+    <form action="/search" method="post">
+        <input name="query" title="Barre de recherche">
+        <button type="submit">Rechercher</button>
+    </form>
+    <div class="filters-nav"></div>
+    {% if facts %}
+        <div class="facts">
+            {% for fact in facts %}
+                <div class="fact">
+                    <a href="{{ fact.url }}">
+                        <img src="/assets/img/author/{{ fact.image_name }}.jpg" alt="{{ fact.author }}"/>
+                        <h3>{{ fact.author }}</h3>
+                        <p>{{ fact.statement }}</p>
+                        <img src="/assets/img/meter/{{ fact.meter }}.png" alt="{{ fact.meter }}">
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endblock %}

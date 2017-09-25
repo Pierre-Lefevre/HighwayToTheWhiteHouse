@@ -14,7 +14,7 @@ let client = solr.createClient({
 });
 
 // Moteur de template
-app.set('view engine', 'ejs');
+app.set('view engine', 'twig');
 
 // Middleware
 app.use('/assets', express.static('public'));
