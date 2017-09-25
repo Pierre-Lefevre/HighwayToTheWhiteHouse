@@ -1,6 +1,6 @@
-let express = require('express')
-let app = express()
-let bodyParser = require('body-parser')
+let express = require('express');
+let app = express();
+let bodyParser = require('body-parser');
 
 // Load dependency
 let solr = require('solr-client');
@@ -14,32 +14,36 @@ let client = solr.createClient({
 });
 
 // Moteur de template
-app.set('view engine', 'ejs')
+app.set('view engine', 'ejs');
 
 // Middleware
-app.use('/assets', express.static('public'))
-app.use(bodyParser.urlencoded({ extended: false }))
-app.use(bodyParser.json())
+app.use('/assets', express.static('public'));
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
 // Routes
 app.get('/', (request, response) => {
-    response.render('pages/index')
-})
+    response.render('pages/index');
+});
 
-app.post('/', (request, response) => {
+app.post('/search', (request, response) => {
     if (request.body.query === undefined || request.body.query === '') {
-        response.render('pages/index')
+        response.redirect('/');
     } else {
-        let query = client.createQuery().q(request.body.query);
-        client.search(query,function(err, obj) {
-            if (err) {
-                console.log(err);
-            } else {
-                console.log(obj.response.docs)
-                response.render('pages/index', {facts: obj.response.docs})
-            }
-        });
+        response.redirect('/search/' + encodeURIComponent(request.body.query));
     }
-})
+});
 
-app.listen(8080)
+app.get('/search/:query', (request, response) => {
+    let query = client.createQuery().q(request.params.query);
+    client.search(query,function(err, obj) {
+        if (err) {
+            console.log(err);
+        } else {
+            console.log(obj.response.docs);
+            response.render('pages/index', {facts: obj.response.docs});
+        }
+    });
+});
+
+app.listen(8080);
