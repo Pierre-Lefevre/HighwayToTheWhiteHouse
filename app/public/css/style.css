@@ -188,11 +188,14 @@ main {
     width: 100%;
 }
 
+.wrapper:last-child .fact{
+    margin-bottom: 0;
+}
+
 .fact {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    padding: 1rem;
     border: 1px solid #d1d7dc;
     background-color: #fff;
     border-radius: 6px;
@@ -216,17 +219,13 @@ main {
 }
 
 .wrapper-left {
-    width: 70%;
+    width: 100%;
 }
 
 .wrapper-right {
     display: flex;
     justify-content: flex-end;
     width: auto;
-}
-
-.wrapper-right img {
-    width: 50%;
 }
 
 .fact h3 {
@@ -240,6 +239,7 @@ main {
 }
 
 .fact a {
+    padding: 1rem;
     display: block;
     color: #4e5968;
 }
