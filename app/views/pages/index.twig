@@ -1,22 +1,49 @@
 {% extends './base.twig' %}
 
 {% block body %}
-    <form action="/search" method="post">
-        <input name="query" title="Barre de recherche">
-        <button type="submit">Rechercher</button>
-    </form>
-    <div class="filters-nav"></div>
+
+    <div class="second-nav">
+        <form action="/search" method="post" class="search-bar">
+            <input type="search" name="query" placeholder="What are you looking for ?">
+            <button type="submit">Search</button>
+        </form>
+        <div class="criterion-nav">
+            <div class="order">
+                <img src="/assets/img/icones/order.svg" alt="Order icone">
+                <button>Most recent</button>
+                <button>Most views</button>
+            </div>
+            <div class="filter">
+                <img src="/assets/img/icones/filter.svg" alt="Filter icone">
+                <button>Full flop</button>
+                <button>Half flip</button>
+                <button>No flip</button>
+                <button>Pants on Fire</button>
+                <button>False</button>
+                <button>Mostly false</button>
+                <button>Half true</button>
+                <button>Mostly true</button>
+                <button>True</button>
+            </div>
+        </div>
+    </div>
     {% if facts %}
         <div class="facts">
-            {% for fact in facts %}
+            {% for key,fact in facts %}
+                {{ (key is even) ? '<div class="wrapper">' }}
                 <div class="fact">
                     <a href="{{ fact.url }}">
-                        <img src="/assets/img/author/{{ fact.image_name }}.jpg" alt="{{ fact.author }}"/>
-                        <h3>{{ fact.author }}</h3>
-                        <p>{{ fact.statement }}</p>
-                        <img src="/assets/img/meter/{{ fact.meter }}.png" alt="{{ fact.meter }}">
+                        <div class="wrapper-left">
+                            <img src="/assets/img/author/{{ fact.image_name }}.jpg" alt="{{ fact.author }}"/>
+                            <h3>{{ fact.author }}</h3>
+                            <p>{{ fact.statement }}</p>
+                        </div>
+                        <div class="wrapper-right">
+                            {#<img src="/assets/img/meter/{{ fact.meter }}.png" alt="{{ fact.meter }}">#}
+                        </div>
                     </a>
                 </div>
+                {{ (key is odd) ? '</div>' }}
             {% endfor %}
         </div>
     {% endif %}
