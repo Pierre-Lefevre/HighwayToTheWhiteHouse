@@ -50,6 +50,12 @@ io.on('connection', function(socket) {
             io.sockets.emit('loadFacts', obj.map((jsonFact) => new Fact(jsonFact).attributes()));
         });
     });
+    socket.on('getFactsWithFilter', function(data){
+        // console.log(data.filters);
+        executeFactQueryWithFilter(data.query, data.filters, function(obj) {
+            io.sockets.emit('loadFacts', obj.map((jsonFact) => new Fact(jsonFact).attributes()));
+        });
+    })
 });
 
 server.listen(8080);
@@ -63,3 +69,24 @@ function executeFactQuery(query, cb) {
         }
     });
 }
+
+function executeFactQueryWithFilter(query, filter, cb) {
+    console.log(filter);
+    let queryFilter = '(';
+    for (let i = 0; i < filter.length; i++) {
+        console.log(filter[i]);
+        queryFilter += 'meter/' + filter[i] + ((i<filter.length-1) ? " OR " : "");
+        console.log(queryFilter);
+    }
+    queryFilter += ")";
+    console.log(queryFilter);
+    solrClient.search(solrClient.createQuery().q(query).matchFilter('meter', queryFilter), function(err, obj) {
+        if (err) {
+            throw err;
+        } else {
+            cb(obj.response.docs);
+        }
+    });
+}
+
+

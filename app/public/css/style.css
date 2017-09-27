@@ -168,7 +168,7 @@ main {
     width: 100%;
 }
 
-.criterion-nav button:hover {
+.criterion-nav button:hover, .criterion-nav button.active {
     background-color: #2C3E50;
     color: white;
 }
