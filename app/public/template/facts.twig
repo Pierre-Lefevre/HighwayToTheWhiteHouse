@@ -1,0 +1,16 @@
+{% for key, fact in facts %}
+    {{ (key is even) ? '<div class="wrapper">' : '' }}
+    <div class="fact">
+        <a href="{{ fact.url }}" target="_blank">
+            <div class="wrapper-left">
+                <img src="/assets/img/{{ fact.imagePath }}" alt="{{ fact.author }}"/>
+                <h3>{{ fact.author }}</h3>
+                <p>{{ fact.statement }}</p>
+            </div>
+            <div class="wrapper-right">
+                {#<img src="/assets/img/{{ fact.meter }}" alt="{{ fact.meter }}">#}
+            </div>
+        </a>
+    </div>
+    {{ (key is odd) ? '</div>' : '' }}
+{% endfor %}

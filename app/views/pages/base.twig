@@ -1,18 +1,19 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <meta charset="utf-8">
-    <title>Highway To The White House</title>
-    <link rel="stylesheet" href="/assets/css/style.css">
-</head>
-<body>
-
-<div id="container">
-    {% include './menu.twig' %}
-    <main>
-        {% block body %}{% endblock %}
-    </main>
-</div>
-
-</body>
+    <head>
+        <meta charset="utf-8">
+        <title>Highway To The White House</title>
+        <link rel="stylesheet" href="/assets/css/style.css">
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twig.js/0.8.7/twig.min.js"></script>
+        <script src="/socket.io/socket.io.js"></script>
+        <script rel="script" src="/assets/js/script.js"></script>
+    </head>
+    <body>
+    <div id="container">
+        {% include './menu.twig' %}
+        <main>
+            {% block body %}{% endblock %}
+        </main>
+    </div>
+    </body>
 </html>

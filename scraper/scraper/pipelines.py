@@ -18,4 +18,4 @@ class AuthorImagePipeline(ImagesPipeline):
             yield scrapy.Request(image_url, meta={'image_name': item["image_name"]})
 
     def file_path(self, request, response=None, info=None):
-        return 'author_img/%s.jpg' % request.meta['image_name']
+        return 'author/%s' % request.meta['image_name']

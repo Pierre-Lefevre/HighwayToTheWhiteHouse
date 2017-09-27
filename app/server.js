@@ -1,12 +1,16 @@
+// Load dependency
 let express = require('express');
 let app = express();
+let server = require('http').Server(app);
+let io = require('socket.io')(server);
 let bodyParser = require('body-parser');
-
-// Load dependency
 let solr = require('solr-client');
 
+// Load class
+let Fact = require('./models/fact');
+
 // Create a client
-let client = solr.createClient({
+let solrClient = solr.createClient({
     "host": "127.0.0.1",
     "port": 8983,
     "path": "/solr",
@@ -35,15 +39,27 @@ app.post('/search', (request, response) => {
 });
 
 app.get('/search/:query', (request, response) => {
-    let query = client.createQuery().q(request.params.query);
-    client.search(query,function(err, obj) {
-        if (err) {
-            console.log(err);
-        } else {
-            console.log(obj.response.docs);
-            response.render('pages/index', {facts: obj.response.docs});
-        }
+    executeFactQuery(request.params.query, function(obj) {
+        response.render('pages/index', {facts: obj.map((jsonFact) => new Fact(jsonFact)), query: request.params.query});
     });
 });
 
-app.listen(8080);
+io.on('connection', function(socket) {
+    socket.on('getFacts', function (data) {
+        executeFactQuery(data, function(obj) {
+            io.sockets.emit('loadFacts', obj.map((jsonFact) => new Fact(jsonFact).attributes()));
+        });
+    });
+});
+
+server.listen(8080);
+
+function executeFactQuery(query, cb) {
+    solrClient.search(solrClient.createQuery().q(query), function(err, obj) {
+        if (err) {
+            throw err;
+        } else {
+            cb(obj.response.docs);
+        }
+    });
+}

@@ -18,13 +18,13 @@ class Factspider(scrapy.Spider):
 			fact["statement"] = current_fact.xpath('.//p[contains(concat(" ", @class, " "), " statement__text ")]/a/text()').extract_first().strip()
 			fact["source"] = current_fact.xpath('.//p[contains(concat(" ", @class, " "), " statement__edition ")]/a/text()').extract_first().replace(u'\u2014', '').strip()
 			fact["date"] = current_fact.xpath('.//p[contains(concat(" ", @class, " "), " statement__edition ")]/span[contains(concat(" ", @class, " "), " article__meta ")]/text()').extract_first().strip()
-			fact["meter"] = current_fact.xpath('.//div[contains(concat(" ", @class, " "), " meter ")]//img/@alt').extract_first().lower().replace(" ", "_").replace("-", "_").replace("!", "").strip()
+			fact["meter"] = 'meter/' + current_fact.xpath('.//div[contains(concat(" ", @class, " "), " meter ")]//img/@alt').extract_first().lower().replace(" ", "_").replace("-", "_").replace("!", "").strip()
 			fact["extra"] = current_fact.xpath('.//div[contains(concat(" ", @class, " "), " meter ")]/p[contains(concat(" ", @class, " "), " quote ")]/text()').extract_first().strip()
 			fact["url"] = 'www.politifact.com' + current_fact.xpath('.//p[contains(concat(" ", @class, " "), " statement__text ")]/a/@href').extract_first().strip()
 			src = current_fact.xpath('.//div[contains(concat(" ", @class, " "), " mugshot ")]//img/@src').extract()
 			fact["image_urls"] = src
 			filename, file_ext = splitext(basename(urlparse(src[0]).path))
-			fact["image_name"] = filename
+			fact["image_name"] = filename + file_ext
 			yield fact
 
 		url = response.xpath('//a[contains(concat(" ", @class, " "), " step-links__next ")]/@href').extract_first().strip()

@@ -185,6 +185,7 @@ main {
 .wrapper {
     display: flex;
     flex-direction: row;
+    width: 100%;
 }
 
 .fact {
@@ -204,6 +205,10 @@ main {
 
 .fact:nth-child(odd) {
     margin-right: 2rem;
+}
+
+.fact:nth-child(even) {
+    flex-grow: 1;
 }
 
 .fact:hover {
@@ -231,6 +236,7 @@ main {
 
 .fact img {
     border-radius: 6px;
+    width: 80px;
 }
 
 .fact a {

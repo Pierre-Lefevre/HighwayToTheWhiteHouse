@@ -1,3 +1,4 @@
 .idea/
 app/node_modules/
+app/npm-debug.log
 solr-6.6.0/

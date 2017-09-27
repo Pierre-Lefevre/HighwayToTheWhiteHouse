@@ -4,7 +4,7 @@
 
     <div class="second-nav">
         <form action="/search" method="post" class="search-bar">
-            <input type="search" name="query" placeholder="What are you looking for ?">
+            <input type="search" name="query" placeholder="What are you looking for ?" value="{{ query | default('') }}">
             <button type="submit">Search</button>
         </form>
         <div class="criterion-nav">
@@ -27,24 +27,9 @@
             </div>
         </div>
     </div>
-    {% if facts %}
-        <div class="facts">
-            {% for key,fact in facts %}
-                {{ (key is even) ? '<div class="wrapper">' }}
-                <div class="fact">
-                    <a href="{{ fact.url }}">
-                        <div class="wrapper-left">
-                            <img src="/assets/img/author/{{ fact.image_name }}.jpg" alt="{{ fact.author }}"/>
-                            <h3>{{ fact.author }}</h3>
-                            <p>{{ fact.statement }}</p>
-                        </div>
-                        <div class="wrapper-right">
-                            {#<img src="/assets/img/meter/{{ fact.meter }}.png" alt="{{ fact.meter }}">#}
-                        </div>
-                    </a>
-                </div>
-                {{ (key is odd) ? '</div>' }}
-            {% endfor %}
-        </div>
-    {% endif %}
+    <div class="facts">
+        {% if facts %}
+            {% include '../../public/template/facts.twig' %}
+        {% endif %}
+    </div>
 {% endblock %}
