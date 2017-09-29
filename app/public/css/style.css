@@ -235,7 +235,7 @@ main {
     text-transform: uppercase;
 }
 
-.fact img {
+.fact img:first-child {
     border-radius: 6px;
     width: 80px;
     height: 80px;
