@@ -44,27 +44,23 @@ app.post('/search', (request, response) => {
 });
 
 app.get('/search/:query', (request, response) => {
-    executeFactQuery(callBackPagesIndex, request.params.query, undefined, response);
+    executeFactQuery(callBackPagesIndex, request.params.query, undefined, undefined, response);
 });
 
 io.on('connection', function(socket) {
-    socket.on('getFacts', function (inputQuery) {
-        executeFactQuery(callBackLoadFacts, inputQuery);
-
+    socket.on('getFacts', function(data){
+       executeFactQuery(callBackLoadFacts, data.inputQuery, data.inputMeterFilter, data.inputDateFilter);
     });
-    socket.on('getFactsWithFilter', function(data){
-       executeFactQuery(callBackLoadFacts, data.query, data.filters);
-    })
 });
 
-function executeFactQuery(cb, inputQuery, inputMeterFilter = [], response = null) {
-    let query = buildQuery(inputQuery, inputMeterFilter);
+function executeFactQuery(cb, inputQuery, inputMeterFilter = [], inputDateFilter = "desc", response = null) {
+    let query = buildQuery(inputQuery, inputMeterFilter, inputDateFilter);
     client.search(query).then(function (data) {
         cb(data.hits.hits, inputQuery, response);
     });
 }
 
-function buildQuery(inputQuery, inputMeterFilter) {
+function buildQuery(inputQuery, inputMeterFilter, inputDateFilter) {
     let meterFilter = [];
     for (let i = 0; i < inputMeterFilter.length; i++) {
         meterFilter.push(inputMeterFilter[i])
@@ -82,7 +78,7 @@ function buildQuery(inputQuery, inputMeterFilter) {
             sort: [
                 {
                     date: {
-                        order: "desc"
+                        order: inputDateFilter
                     }
                 }
             ],

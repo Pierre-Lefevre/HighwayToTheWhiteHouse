@@ -2,6 +2,7 @@
     {{ (key is even) ? '<div class="wrapper">' : '' }}
     <div class="fact">
         <a href="{{ fact.url }}" target="_blank">
+            {{ fact.date }}
             <div class="wrapper-left">
                 <img src="/assets/img/author/{{ fact.imageName }}" alt="{{ fact.author }}"/>
                 <img src="/assets/img/meter/{{ fact.meter }}.png" alt="{{ fact.meter }}">
