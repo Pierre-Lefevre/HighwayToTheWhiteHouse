@@ -5,19 +5,18 @@ const GIF_METER = ["meter/pants_on_fire"];
 class Fact {
 
     constructor (jsonFact) {
-        this._date = jsonFact.date[0];
-        this._author = jsonFact.author[0];
-        this._url = jsonFact.url[0];
-        this._extra = jsonFact.extra[0];
-        this._imageName = jsonFact.image_name[0];
-        this._meter = jsonFact.meter[0];
-        this._source = jsonFact.source[0];
-        this._imageUrls = jsonFact.image_urls[0];
-        this._statement = jsonFact.statement[0];
-        this._imageUrl = jsonFact.image_url[0];
-        this._imagePath = jsonFact.image_path[0];
-        this._imageChecksum = jsonFact.image_checksum[0];
-        this._id = jsonFact.id[0];
+        this._date = jsonFact.date;
+        this._author = jsonFact.author;
+        this._url = jsonFact.url;
+        this._extra = jsonFact.extra;
+        this._imageName = jsonFact.image_name;
+        this._meter = jsonFact.meter;
+        this._source = jsonFact.source;
+        this._imageUrls = jsonFact.image_urls;
+        this._statement = jsonFact.statement;
+        this._imageUrl = jsonFact.image_url;
+        this._imagePath = jsonFact.image_path;
+        this._imageChecksum = jsonFact.image_checksum;
     }
 
     attributes() {

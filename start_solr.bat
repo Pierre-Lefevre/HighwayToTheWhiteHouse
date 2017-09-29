@@ -1,1 +1,0 @@
-solr-6.6.0\bin\solr start -p 8983

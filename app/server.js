@@ -4,26 +4,31 @@ let app = express();
 let server = require('http').Server(app);
 let io = require('socket.io')(server);
 let bodyParser = require('body-parser');
-let solr = require('solr-client');
+let elasticsearch = require('elasticsearch');
+
+// Create a client
+let client = new elasticsearch.Client({
+    host: 'localhost:9200'
+});
 
 // Load class
 let Fact = require('./models/fact');
 
-// Create a client
-let solrClient = solr.createClient({
-    "host": "127.0.0.1",
-    "port": 8983,
-    "path": "/solr",
-    "core": "highway_to_the_white_house"
-});
-
-// Moteur de template
+// Template engine
 app.set('view engine', 'twig');
 
 // Middleware
 app.use('/assets', express.static('public'));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+
+// Callback
+let callBackLoadFacts = function (facts, inputQuery, response) {
+    io.sockets.emit('loadFacts', facts.map((jsonFact) => new Fact(jsonFact._source).attributes()));
+};
+let callBackPagesIndex = function(facts, inputQuery, response) {
+    response.render('pages/index', {facts: facts.map((jsonFact) => new Fact(jsonFact._source)), query: inputQuery});
+};
 
 // Routes
 app.get('/', (request, response) => {
@@ -39,54 +44,54 @@ app.post('/search', (request, response) => {
 });
 
 app.get('/search/:query', (request, response) => {
-    executeFactQuery(request.params.query, function(obj) {
-        response.render('pages/index', {facts: obj.map((jsonFact) => new Fact(jsonFact)), query: request.params.query});
-    });
+    executeFactQuery(callBackPagesIndex, request.params.query, undefined, response);
 });
 
 io.on('connection', function(socket) {
-    socket.on('getFacts', function (data) {
-        executeFactQuery(data, function(obj) {
-            io.sockets.emit('loadFacts', obj.map((jsonFact) => new Fact(jsonFact).attributes()));
-        });
+    socket.on('getFacts', function (inputQuery) {
+        executeFactQuery(callBackLoadFacts, inputQuery);
+
     });
     socket.on('getFactsWithFilter', function(data){
-        // console.log(data.filters);
-        executeFactQueryWithFilter(data.query, data.filters, function(obj) {
-            io.sockets.emit('loadFacts', obj.map((jsonFact) => new Fact(jsonFact).attributes()));
-        });
+       executeFactQuery(callBackLoadFacts, data.query, data.filters);
     })
 });
 
-server.listen(8080);
-
-function executeFactQuery(query, cb) {
-    solrClient.search(solrClient.createQuery().q(query), function(err, obj) {
-        if (err) {
-            throw err;
-        } else {
-            cb(obj.response.docs);
-        }
+function executeFactQuery(cb, inputQuery, inputMeterFilter = [], response = null) {
+    let query = buildQuery(inputQuery, inputMeterFilter);
+    client.search(query).then(function (data) {
+        cb(data.hits.hits, inputQuery, response);
     });
 }
 
-function executeFactQueryWithFilter(query, filter, cb) {
-    console.log(filter);
-    let queryFilter = '(';
-    for (let i = 0; i < filter.length; i++) {
-        console.log(filter[i]);
-        queryFilter += 'meter/' + filter[i] + ((i<filter.length-1) ? " OR " : "");
-        console.log(queryFilter);
+function buildQuery(inputQuery, inputMeterFilter) {
+    let meterFilter = [];
+    for (let i = 0; i < inputMeterFilter.length; i++) {
+        meterFilter.push("meter/" + inputMeterFilter[i])
     }
-    queryFilter += ")";
-    console.log(queryFilter);
-    solrClient.search(solrClient.createQuery().q(query).matchFilter('meter', queryFilter), function(err, obj) {
-        if (err) {
-            throw err;
-        } else {
-            cb(obj.response.docs);
+
+    let filter = [];
+    if (meterFilter.length > 0) {
+        filter.push({terms: { meter: meterFilter }});
+    }
+
+    return {
+        from : 0,
+        size : 100,
+        body: {
+            query: {
+                bool : {
+                    must: {
+                        query_string: {
+                            fields : ["author", "statement"],
+                            query: inputQuery
+                        }
+                    },
+                    filter: filter
+                }
+            }
         }
-    });
+    };
 }
 
-
+server.listen(8080);
