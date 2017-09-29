@@ -3,13 +3,11 @@
     <div class="fact">
         <a href="{{ fact.url }}" target="_blank">
             <div class="wrapper-left">
-                <img src="/assets/img/{{ fact.imagePath }}" alt="{{ fact.author }}"/>
-                <h3>{{ fact.author }}</h3>
-                <p>{{ fact.statement }}</p>
+                <img src="/assets/img/author/{{ fact.imageName }}" alt="{{ fact.author }}"/>
+                <img src="/assets/img/meter/{{ fact.meter }}" alt="{{ fact.meter }}">
             </div>
-            <div class="wrapper-right">
-                <img src="/assets/img/{{ fact.meter }}" alt="{{ fact.meter }}">
-            </div>
+            <h3>{{ fact.author }}</h3>
+            <p>{{ fact.statement }}</p>
         </a>
     </div>
     {{ (key is odd) ? '</div>' : '' }}

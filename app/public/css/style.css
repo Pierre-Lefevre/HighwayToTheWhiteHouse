@@ -220,6 +220,8 @@ main {
 
 .wrapper-left {
     width: 100%;
+    display: flex;
+    justify-content: space-between;
 }
 
 .wrapper-right {
@@ -236,12 +238,19 @@ main {
 .fact img {
     border-radius: 6px;
     width: 80px;
+    height: 80px;
+}
+
+.fact img:last-child {
+    width: auto;
+    height: 80px;
 }
 
 .fact a {
     padding: 1rem;
     display: block;
     color: #4e5968;
+    width: 100%;
 }
 
 .fact p {
