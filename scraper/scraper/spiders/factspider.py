@@ -1,11 +1,13 @@
 # -*- coding: utf-8 -*-
-# scrapy crawl factspider -o items.json -t json
+# scrapy crawl factspider -o ../facts.json -t json
 
 import scrapy
+import re
 from urllib.parse import urlparse
 from os.path import splitext, basename
 from scrapy.loader import ItemLoader
 from scraper.items import FactItem
+from datetime import datetime
 
 class Factspider(scrapy.Spider):
 	name = 'factspider'
@@ -17,10 +19,14 @@ class Factspider(scrapy.Spider):
 			fact["author"] = current_fact.xpath('.//div[contains(concat(" ", @class, " "), " statement__source ")]/a/text()').extract_first().strip()
 			fact["statement"] = current_fact.xpath('.//p[contains(concat(" ", @class, " "), " statement__text ")]/a/text()').extract_first().strip()
 			fact["source"] = current_fact.xpath('.//p[contains(concat(" ", @class, " "), " statement__edition ")]/a/text()').extract_first().replace(u'\u2014', '').strip()
+
 			fact["date"] = current_fact.xpath('.//p[contains(concat(" ", @class, " "), " statement__edition ")]/span[contains(concat(" ", @class, " "), " article__meta ")]/text()').extract_first().strip()
-			fact["meter"] = 'meter/' + current_fact.xpath('.//div[contains(concat(" ", @class, " "), " meter ")]//img/@alt').extract_first().lower().replace(" ", "_").replace("-", "_").replace("!", "").strip()
+			fact["date"] = re.sub(' (\d*)(th|st|nd|rd), ', ' \\1, ', fact["date"])
+			fact["date"] = str(datetime.strptime(fact["date"], 'on %A, %B %d, %Y').strftime('%Y-%m-%d'))
+
+			fact["meter"] = current_fact.xpath('.//div[contains(concat(" ", @class, " "), " meter ")]//img/@alt').extract_first().lower().replace(" ", "_").replace("-", "_").replace("!", "").strip()
 			fact["extra"] = current_fact.xpath('.//div[contains(concat(" ", @class, " "), " meter ")]/p[contains(concat(" ", @class, " "), " quote ")]/text()').extract_first().strip()
-			fact["url"] = 'www.politifact.com' + current_fact.xpath('.//p[contains(concat(" ", @class, " "), " statement__text ")]/a/@href').extract_first().strip()
+			fact["url"] = 'http://www.politifact.com' + current_fact.xpath('.//p[contains(concat(" ", @class, " "), " statement__text ")]/a/@href').extract_first().strip()
 			src = current_fact.xpath('.//div[contains(concat(" ", @class, " "), " mugshot ")]//img/@src').extract()
 			fact["image_urls"] = src
 			filename, file_ext = splitext(basename(urlparse(src[0]).path))

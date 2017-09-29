@@ -1,7 +1,5 @@
 let moment = require('moment');
 
-const GIF_METER = ["meter/pants_on_fire"];
-
 class Fact {
 
     constructor (jsonFact) {
@@ -12,11 +10,11 @@ class Fact {
         this._imageName = jsonFact.image_name;
         this._meter = jsonFact.meter;
         this._source = jsonFact.source;
-        this._imageUrls = jsonFact.image_urls;
+        this._imageUrls = jsonFact.image_urls[0];
         this._statement = jsonFact.statement;
-        this._imageUrl = jsonFact.image_url;
-        this._imagePath = jsonFact.image_path;
-        this._imageChecksum = jsonFact.image_checksum;
+        this._imageUrl = jsonFact.images[0].url;
+        this._imagePath = jsonFact.images[0].path;
+        this._imageChecksum = jsonFact.images[0].checksum;
     }
 
     attributes() {
@@ -32,13 +30,12 @@ class Fact {
             statement: this.statement,
             imageUrl: this.imageUrl,
             imagePath: this.imagePath,
-            imageChecksum: this.imageChecksum,
-            id: this.id
+            imageChecksum: this.imageChecksum
         }
     }
 
     get date() {
-        return moment(this._date, 'on dddd, MMMM Do, YYYY').fromNow();
+        return moment(this._date, 'YYYY-MM-DD').fromNow();
     }
 
     get author() {
@@ -46,7 +43,7 @@ class Fact {
     }
 
     get url() {
-        return "http://" + this._url;
+        return this._url;
     }
 
     get extra() {
@@ -58,7 +55,7 @@ class Fact {
     }
 
     get meter() {
-        return this._meter + (GIF_METER.indexOf(this._meter) === 0 ? ".gif" : ".png");
+        return this._meter;
     }
 
     get source() {
@@ -83,10 +80,6 @@ class Fact {
 
     get imageChecksum() {
         return this._imageChecksum;
-    }
-
-    get id() {
-        return this._id;
     }
 }
 

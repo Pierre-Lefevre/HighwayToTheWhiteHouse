@@ -67,7 +67,7 @@ function executeFactQuery(cb, inputQuery, inputMeterFilter = [], response = null
 function buildQuery(inputQuery, inputMeterFilter) {
     let meterFilter = [];
     for (let i = 0; i < inputMeterFilter.length; i++) {
-        meterFilter.push("meter/" + inputMeterFilter[i])
+        meterFilter.push(inputMeterFilter[i])
     }
 
     let filter = [];
@@ -76,14 +76,21 @@ function buildQuery(inputQuery, inputMeterFilter) {
     }
 
     return {
-        from : 0,
-        size : 100,
+        from: 0,
+        size: 100,
         body: {
+            sort: [
+                {
+                    date: {
+                        order: "desc"
+                    }
+                }
+            ],
             query: {
-                bool : {
+                bool: {
                     must: {
                         query_string: {
-                            fields : ["author", "statement"],
+                            fields: ["author", "statement"],
                             query: inputQuery
                         }
                     },
