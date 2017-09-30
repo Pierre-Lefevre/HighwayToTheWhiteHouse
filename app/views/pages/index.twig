@@ -1,12 +1,13 @@
 {% extends './base.twig' %}
 
 {% block body %}
-
     <div class="second-nav">
         <form action="/search" method="post" class="search-bar">
             <input type="search" name="query" placeholder="What are you looking for ?" value="{{ query | default('') }}">
             <button type="submit">Search</button>
         </form>
+        <input type="text" class="datepicker" data-type-date="min">
+        <input type="text" class="datepicker" data-type-date="max">
         <div class="criterion-nav">
             <div class="order">
                 <img src="/assets/img/icones/order.svg" alt="Order icone">

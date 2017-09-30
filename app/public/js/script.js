@@ -5,6 +5,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
     let formQuery = document.querySelector(".search-bar");
     let inputQuery = document.querySelector("input[name='query']");
+    let inputMinDate = document.querySelector(".datepicker[data-type-date='min']");
+    let inputMaxDate = document.querySelector(".datepicker[data-type-date='max']");
     let sortButtons = document.querySelectorAll("button.arrow");
     let inputSort = {};
     let meterFilterButtons = document.querySelectorAll("button[data-meter-filter]");
@@ -19,6 +21,10 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     inputQuery.addEventListener("input", function () {
+        emitQuery();
+    });
+
+    $(".datepicker").datepicker({dateFormat: 'yy-mm-dd'}).change(function () {
         emitQuery();
     });
 
@@ -56,8 +62,9 @@ document.addEventListener('DOMContentLoaded', function () {
         console.log(inputSort);
         socket.emit('getFacts', {
             inputQuery: inputQuery.value,
-            inputMeterFilter: inputMeterFilter,
-            inputSort: inputSort
+            inputDate: {min: inputMinDate.value, max: inputMaxDate.value},
+            inputSort: inputSort,
+            inputMeterFilter: inputMeterFilter
         });
     }
 });

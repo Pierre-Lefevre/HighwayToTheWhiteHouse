@@ -49,33 +49,18 @@ app.get('/search/:query', (request, response) => {
 
 io.on('connection', function (socket) {
     socket.on('getFacts', function (data) {
-        executeFactQuery(callBackLoadFacts, data.inputQuery, data.inputMeterFilter, data.inputSort);
+        executeFactQuery(callBackLoadFacts, data.inputQuery, data.inputDate, data.inputSort, data.inputMeterFilter);
     });
 });
 
-function executeFactQuery(cb, inputQuery, inputMeterFilter = [], inputSort = {}, response = null) {
-    let query = buildQuery(inputQuery, inputMeterFilter, inputSort);
+function executeFactQuery(cb, inputQuery, inputDate = {}, inputSort = {}, inputMeterFilter = [], response = null) {
+    let query = buildQuery(inputQuery, inputDate, inputSort, inputMeterFilter);
     client.search(query).then(function (data) {
         cb(data.hits.hits, inputQuery, response);
     });
 }
 
-function buildQuery(inputQuery, inputMeterFilter, inputSort) {
-    let sort = [];
-    for (let key in inputSort) {
-        switch (key) {
-            case "date":
-                sort.push({date: {order: inputSort[key]}});
-                break;
-            case "_score":
-                sort.push({_score: {order: inputSort[key]}});
-                break;
-            case "confidence":
-                sort.push({confidence: {order: inputSort[key]}});
-                break;
-        }
-    }
-
+function buildQuery(inputQuery, inputDate, inputSort, inputMeterFilter) {
     inputQuery = inputQuery.trim();
     /*let query = "";
     if (inputQuery.length === 0) {
@@ -92,14 +77,32 @@ function buildQuery(inputQuery, inputMeterFilter, inputSort) {
         });
     }*/
 
-    let meterFilter = [];
-    for (let i = 0; i < inputMeterFilter.length; i++) {
-        meterFilter.push(inputMeterFilter[i])
+    let date = {};
+    if (inputDate.min !== "") {
+        date.gte = inputDate.min;
+    }
+    if (inputDate.max !== "") {
+        date.lt = inputDate.max;
+    }
+
+    let sort = [];
+    for (let key in inputSort) {
+        switch (key) {
+            case "date":
+                sort.push({date: {order: inputSort[key]}});
+                break;
+            case "_score":
+                sort.push({_score: {order: inputSort[key]}});
+                break;
+            case "confidence":
+                sort.push({confidence: {order: inputSort[key]}});
+                break;
+        }
     }
 
     let filter = [];
-    if (meterFilter.length > 0) {
-        filter.push({terms: {meter: meterFilter}});
+    if (inputMeterFilter.length > 0) {
+        filter.push({terms: {meter: inputMeterFilter}});
     }
 
     return {
@@ -109,14 +112,20 @@ function buildQuery(inputQuery, inputMeterFilter, inputSort) {
             sort: sort,
             query: {
                 bool: {
-                    must: {
-                        multi_match : {
-                            fields: ["author", "statement^3"],
-                            query: inputQuery,
-                            operator : "and",
-                            fuzziness: "AUTO"
+                    must: [
+                        {
+                            multi_match: {
+                                fields: ["author", "statement^3"],
+                                query: inputQuery,
+                                operator: "and",
+                                fuzziness: "AUTO"
+                            }
+                        }, {
+                            range: {
+                                date: date
+                            }
                         }
-                    },
+                    ],
                     /*must: {
                         query_string: {
                             fields: ["author", "statement^3"],
