@@ -19,14 +19,14 @@ app.set('view engine', 'twig');
 
 // Middleware
 app.use('/assets', express.static('public'));
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 
 // Callback
 let callBackLoadFacts = function (facts, inputQuery, response) {
     io.sockets.emit('loadFacts', facts.map((jsonFact) => new Fact(jsonFact._source).attributes()));
 };
-let callBackPagesIndex = function(facts, inputQuery, response) {
+let callBackPagesIndex = function (facts, inputQuery, response) {
     response.render('pages/index', {facts: facts.map((jsonFact) => new Fact(jsonFact._source)), query: inputQuery});
 };
 
@@ -47,20 +47,51 @@ app.get('/search/:query', (request, response) => {
     executeFactQuery(callBackPagesIndex, request.params.query, undefined, undefined, response);
 });
 
-io.on('connection', function(socket) {
-    socket.on('getFacts', function(data){
-       executeFactQuery(callBackLoadFacts, data.inputQuery, data.inputMeterFilter, data.inputDateFilter);
+io.on('connection', function (socket) {
+    socket.on('getFacts', function (data) {
+        executeFactQuery(callBackLoadFacts, data.inputQuery, data.inputMeterFilter, data.inputSort);
     });
 });
 
-function executeFactQuery(cb, inputQuery, inputMeterFilter = [], inputDateFilter = "desc", response = null) {
-    let query = buildQuery(inputQuery, inputMeterFilter, inputDateFilter);
+function executeFactQuery(cb, inputQuery, inputMeterFilter = [], inputSort = {}, response = null) {
+    let query = buildQuery(inputQuery, inputMeterFilter, inputSort);
     client.search(query).then(function (data) {
         cb(data.hits.hits, inputQuery, response);
     });
 }
 
-function buildQuery(inputQuery, inputMeterFilter, inputDateFilter) {
+function buildQuery(inputQuery, inputMeterFilter, inputSort) {
+    let sort = [];
+    for (let key in inputSort) {
+        switch (key) {
+            case "date":
+                sort.push({date: {order: inputSort[key]}});
+                break;
+            case "_score":
+                sort.push({_score: {order: inputSort[key]}});
+                break;
+            case "confidence":
+                sort.push({confidence: {order: inputSort[key]}});
+                break;
+        }
+    }
+
+    inputQuery = inputQuery.trim();
+    /*let query = "";
+    if (inputQuery.length === 0) {
+        query = "*";
+    } else {
+        inputQuery.replace(/\s\s+/g, ' ').split(" ").forEach(function (element, index, array) {
+            query += element;
+            if (["AND", "OR", "NOT"].indexOf(element) === -1) {
+                //query += "~3";
+            }
+            if (index < array.length - 1) {
+                query += " ";
+            }
+        });
+    }*/
+
     let meterFilter = [];
     for (let i = 0; i < inputMeterFilter.length; i++) {
         meterFilter.push(inputMeterFilter[i])
@@ -68,28 +99,31 @@ function buildQuery(inputQuery, inputMeterFilter, inputDateFilter) {
 
     let filter = [];
     if (meterFilter.length > 0) {
-        filter.push({terms: { meter: meterFilter }});
+        filter.push({terms: {meter: meterFilter}});
     }
 
     return {
         from: 0,
         size: 100,
         body: {
-            sort: [
-                {
-                    date: {
-                        order: inputDateFilter
-                    }
-                }
-            ],
+            sort: sort,
             query: {
                 bool: {
                     must: {
-                        query_string: {
-                            fields: ["author", "statement"],
-                            query: inputQuery
+                        multi_match : {
+                            fields: ["author", "statement^3"],
+                            query: inputQuery,
+                            operator : "and",
+                            fuzziness: "AUTO"
                         }
                     },
+                    /*must: {
+                        query_string: {
+                            fields: ["author", "statement^3"],
+                            query: query,
+                            default_operator: "AND"
+                        }
+                    },*/
                     filter: filter
                 }
             }

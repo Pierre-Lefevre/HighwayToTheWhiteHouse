@@ -1,45 +1,63 @@
-document.addEventListener('DOMContentLoaded', function(e) {
+document.addEventListener('DOMContentLoaded', function () {
 
     let socket = io.connect('http://localhost:8080');
     twig({id: 'facts', href: '/assets/template/facts.twig', async: false});
 
+    let formQuery = document.querySelector(".search-bar");
     let inputQuery = document.querySelector("input[name='query']");
-    let filterButtons = document.querySelectorAll("button[data-meter-filter]");
-    let activeFilters = [];
-    let filterDateButton = document.querySelector("button[data-date-filter]");
+    let sortButtons = document.querySelectorAll("button.arrow");
+    let inputSort = {};
+    let meterFilterButtons = document.querySelectorAll("button[data-meter-filter]");
+    let inputMeterFilter = [];
+
+    emitQuery();
+
+    formQuery.addEventListener("submit", function (e) {
+        e.preventDefault();
+        emitQuery();
+        return false;
+    });
 
     inputQuery.addEventListener("input", function () {
         emitQuery();
     });
 
-    for (let i = 0; i < filterButtons.length; i++) {
-        filterButtons[i].addEventListener('click', function() {
-            let index = activeFilters.indexOf(this.dataset.meterFilter);
-            if (index === -1) {
-                activeFilters.push(this.dataset.meterFilter);
+    for (let i = 0; i < sortButtons.length; i++) {
+        sortButtons[i].addEventListener('click', function () {
+            this.classList.toggle("active");
+            document.querySelector(".arrow[data-type-sort='" + this.dataset.typeSort + "'][data-order-sort='" + (this.dataset.orderSort === "desc" ? "asc" : "desc") + "']").classList.remove("active");
+            if (this.classList.contains("active")) {
+                inputSort[this.dataset.typeSort] = this.dataset.orderSort;
             } else {
-                activeFilters.splice(index, 1);
+                delete inputSort[this.dataset.typeSort];
+            }
+            emitQuery();
+        });
+    }
+
+    for (let i = 0; i < meterFilterButtons.length; i++) {
+        meterFilterButtons[i].addEventListener('click', function () {
+            let index = inputMeterFilter.indexOf(this.dataset.meterFilter);
+            if (index === -1) {
+                inputMeterFilter.push(this.dataset.meterFilter);
+            } else {
+                inputMeterFilter.splice(index, 1);
             }
             this.classList.toggle('active');
             emitQuery();
         })
     }
 
-    filterDateButton.addEventListener('click', function() {
-        this.setAttribute("data-date-filter", this.dataset.dateFilter === "desc" ? "asc" : "desc");
-        this.classList.toggle('active');
-        emitQuery();
-    });
-
-    socket.on('loadFacts', function(facts) {
-        document.querySelector(".facts").innerHTML = twig({ref:'facts'}).render({facts : facts});
+    socket.on('loadFacts', function (facts) {
+        document.querySelector(".facts").innerHTML = twig({ref: 'facts'}).render({facts: facts});
     });
 
     function emitQuery() {
+        console.log(inputSort);
         socket.emit('getFacts', {
             inputQuery: inputQuery.value,
-            inputMeterFilter: activeFilters,
-            inputDateFilter: filterDateButton.dataset.dateFilter
+            inputMeterFilter: inputMeterFilter,
+            inputSort: inputSort
         });
     }
 });

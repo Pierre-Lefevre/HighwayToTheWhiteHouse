@@ -1,6 +1,8 @@
 #!/bin/bash
 # ./prepareFactsToImport.sh facts.json > import.json
 
+rm import.json
+
 sed -i 's/\r//g' $1
 
 if [[ $(head -n 1 $1) =~ ^\[$ ]]; then

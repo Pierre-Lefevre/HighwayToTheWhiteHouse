@@ -14,6 +14,7 @@ class FactItem(scrapy.Item):
 	source = scrapy.Field()
 	date = scrapy.Field()
 	meter = scrapy.Field()
+	confidence = scrapy.Field()
 	extra = scrapy.Field()
 	url = scrapy.Field()
 	image_urls = scrapy.Field()

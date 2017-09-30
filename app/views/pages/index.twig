@@ -10,8 +10,27 @@
         <div class="criterion-nav">
             <div class="order">
                 <img src="/assets/img/icones/order.svg" alt="Order icone">
-                <button class="active" data-date-filter="desc">Most recent</button>
-                <button>Most views</button>
+                <div>
+                    <span>Date</span>
+                    <div>
+                        <button class="arrow arrow-up" data-type-sort="date" data-order-sort="desc"></button>
+                        <button class="arrow arrow-down" data-type-sort="date" data-order-sort="asc"></button>
+                    </div>
+                </div>
+                <div>
+                    <span>Relevance</span>
+                    <div>
+                        <button class="arrow arrow-up" data-type-sort="_score" data-order-sort="desc"></button>
+                        <button class="arrow arrow-down" data-type-sort="_score" data-order-sort="asc"></button>
+                    </div>
+                </div>
+                <div>
+                    <span>Confidence</span>
+                    <div>
+                        <button class="arrow arrow-up" data-type-sort="confidence" data-order-sort="desc"></button>
+                        <button class="arrow arrow-down" data-type-sort="confidence" data-order-sort="asc"></button>
+                    </div>
+                </div>
             </div>
             <div class="filter">
                 <img src="/assets/img/icones/filter.svg" alt="Filter icone">
