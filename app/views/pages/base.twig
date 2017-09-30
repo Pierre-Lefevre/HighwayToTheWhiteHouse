@@ -3,20 +3,20 @@
     <head>
         <meta charset="utf-8">
         <title>Highway To The White House</title>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css">
+        <link rel="stylesheet" href="/assets/css/jquery-ui.min.css">
         <link rel="stylesheet" href="/assets/css/style.css">
-        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twig.js/0.8.7/twig.min.js"></script>
-        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+        <script src="/assets/js/jquery.min.js"></script>
+        <script src="/assets/js/jquery-ui.min.js"></script>
         <script src="/socket.io/socket.io.js"></script>
-        <script rel="script" src="/assets/js/script.js"></script>
+        <script src="/assets/js/twig.min.js"></script>
+        <script src="/assets/js/script.js"></script>
     </head>
     <body>
-    <div id="container">
-        {% include './menu.twig' %}
-        <main>
-            {% block body %}{% endblock %}
-        </main>
-    </div>
+        <div id="container">
+            {% include './menu.twig' %}
+            <main>
+                {% block body %}{% endblock %}
+            </main>
+        </div>
     </body>
 </html>

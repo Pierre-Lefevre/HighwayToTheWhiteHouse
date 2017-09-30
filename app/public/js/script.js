@@ -59,7 +59,6 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     function emitQuery() {
-        console.log(inputSort);
         socket.emit('getFacts', {
             inputQuery: inputQuery.value,
             inputDate: {min: inputMinDate.value, max: inputMaxDate.value},

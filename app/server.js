@@ -62,6 +62,17 @@ function executeFactQuery(cb, inputQuery, inputDate = {}, inputSort = {}, inputM
 
 function buildQuery(inputQuery, inputDate, inputSort, inputMeterFilter) {
     inputQuery = inputQuery.trim();
+    let match = {};
+    if (inputQuery.length === 0) {
+        match.match_all = {};
+    } else {
+        match.multi_match = {
+            fields: ["author", "statement^3"],
+            query: inputQuery,
+            operator: "and",
+            fuzziness: "AUTO"
+        };
+    }
     /*let query = "";
     if (inputQuery.length === 0) {
         query = "*";
@@ -113,14 +124,8 @@ function buildQuery(inputQuery, inputDate, inputSort, inputMeterFilter) {
             query: {
                 bool: {
                     must: [
+                        match,
                         {
-                            multi_match: {
-                                fields: ["author", "statement^3"],
-                                query: inputQuery,
-                                operator: "and",
-                                fuzziness: "AUTO"
-                            }
-                        }, {
                             range: {
                                 date: date
                             }
