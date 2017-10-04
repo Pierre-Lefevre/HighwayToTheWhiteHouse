@@ -1,15 +1,19 @@
-{% for key, fact in facts %}
-    {{ (key is even) ? '<div class="wrapper">' : '' }}
-    <div class="fact">
-        <a href="{{ fact.url }}" target="_blank">
-            {{ fact.date }}
-            <div class="wrapper-left">
-                <img src="/assets/img/author/{{ fact.imageName }}" alt="{{ fact.author }}"/>
-                <img src="/assets/img/meter/{{ fact.meter }}.png" alt="{{ fact.meter }}">
-            </div>
-            <h3>{{ fact.author }}</h3>
-            <p>{{ fact.statement }}</p>
-        </a>
-    </div>
-    {{ (key is odd) ? '</div>' : '' }}
-{% endfor %}
+{% if facts is not empty %}
+    {% for key, fact in facts %}
+        {{ (key is even) ? '<div class="wrapper">' : '' }}
+        <div class="fact">
+            <a href="{{ fact.url }}" target="_blank">
+                <div class="wrapper-left">
+                    <img src="/assets/img/author/{{ fact.imageName }}" alt="{{ fact.author }}"/>
+                    <img src="/assets/img/meter/{{ fact.meter }}.png" alt="{{ fact.meter }}">
+                </div>
+                <p class="date">{{ fact.date }}</p>
+                <h3>{{ fact.author }}</h3>
+                <p>{{ fact.statement }}</p>
+            </a>
+        </div>
+        {{ (key is odd) ? '</div>' : '' }}
+    {% endfor %}
+{% else %}
+    <p>Any document correspond to your query.</p>
+{% endif %}

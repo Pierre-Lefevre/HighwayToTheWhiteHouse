@@ -23,7 +23,6 @@ a {
 button {
     background-color: #f0f3f5;
     border: 1.5px solid #2C3E50;
-    border-radius: 5px;
     color: #2C3E50;
     height: 40px;
     cursor: pointer;
@@ -47,9 +46,6 @@ button {
 
 .main-nav {
     background-color: #2C3E50;
-    /*
-        box-shadow: 0px 0px 20px 1px rgba(0, 0, 0, 0.2), inset 0px 0px 2px 1px #fff;
-    */
     width: 18vw;
     height: 100vh;
     position: fixed;
@@ -103,13 +99,38 @@ main {
 
 /***** Barre de recherche *****/
 
+.filters-forms {
+    display: flex;
+}
+
+img.remove-filters{
+    cursor: pointer;
+    height: 40px;
+    position: absolute;
+    top: 1rem;
+    right: 2rem;
+}
+
+.date-form {
+    margin-left: 2rem;
+}
+
+.date-form input {
+    width: 15rem;
+    background: #2C3E50;
+    border: 1px solid #2C3E50;
+    color: white;
+    height: 40px;
+    margin: 0;
+    padding: 0 10px;
+}
+
 .search-bar input[type=search] {
     width: 15rem;
     -webkit-transition: width 0.4s ease-in-out;
     transition: width 0.4s ease-in-out;
     background: #2C3E50;
     border: 1px solid #2C3E50;
-    border-radius: 5px 0 0 5px;
     color: white;
     display: block;
     float: left;
@@ -122,16 +143,17 @@ main {
     width: 30rem;
 }
 
-.search-bar input::-webkit-input-placeholder {
+input::-webkit-input-placeholder {
     color: #9CA4AC;
 }
 
 .search-bar button {
     width : 5rem;
     background: #2C3E50;
-    border-left-color: white;
+    border: 0;
+    border-left: 1px solid white;
     color: white;
-    border-radius: 0 5px 5px 0;
+    
 }
 
 /***** Barre de critères *****/
@@ -156,15 +178,33 @@ main {
     border-left: solid 1.5px #2C3E50;
 }
 
+.order button {
+    cursor: default;
+}
+
+.order button span {
+    cursor: pointer;
+}
+
 .criterion-nav img {
     margin-right: 10px;
 }
 
-.criterion-nav .order > div, .criterion-nav .filter button {
+.criterion-nav .order button, .criterion-nav .filter button {
     margin-right: 5px;
     border: 1px solid #d1d7dc;
     background-color: #fff;
-    border-radius: 6px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/*.criterion-nav .order > div, .criterion-nav .filter button {
+    margin-right: 5px;
+    border: 1px solid #d1d7dc;
+    background-color: #fff;
+    
     width: 100%;
 }
 
@@ -184,6 +224,12 @@ main {
 .criterion-nav .order > div > div {
     display: flex;
     flex-direction: column;
+}*/
+
+.criterion-nav .order button div {
+    display: flex;
+    flex-direction: column;
+    margin-left: 1rem;
 }
 
 .criterion-nav .filter button:hover,
@@ -192,21 +238,20 @@ main {
     color: white;
 }
 
-button.arrow {
+span.arrow {
     padding: 0;
     background-color: transparent;
-    border-radius: 0;
 }
 
-button.arrow-up.active {
+span.arrow-up.active {
     border-bottom-color: #DCB621;
 }
 
-button.arrow-down.active {
+span.arrow-down.active {
     border-top-color: #DCB621;
 }
 
-button.arrow-up {
+span.arrow-up {
     width: 0;
     height: 0;
     border-top: none;
@@ -216,7 +261,7 @@ button.arrow-up {
     margin-bottom: 5px;
 }
 
-button.arrow-down {
+span.arrow-down {
     width: 0;
     height: 0;
     border-bottom: none;
@@ -250,7 +295,6 @@ button.arrow-down {
     justify-content: space-between;
     border: 1px solid #d1d7dc;
     background-color: #fff;
-    border-radius: 6px;
     margin-bottom: 2rem;
     -webkit-transition-duration: 0.5s;
     transition-duration: 0.5s;
@@ -288,12 +332,10 @@ button.arrow-down {
 }
 
 .fact img:first-child {
-    border-radius: 6px;
-    width: 80px;
-    height: 80px;
+    
 }
 
-.fact img:last-child {
+.fact img {
     width: auto;
     height: 80px;
 }
@@ -307,4 +349,15 @@ button.arrow-down {
 
 .fact p {
     color: #DCB621;
+}
+
+.fact p.date {
+    color: #2C3E50;
+    font-size: smaller;
+}
+
+button[disabled] {
+    color: gray;
+    border-color: gray;
+    cursor: default;
 }

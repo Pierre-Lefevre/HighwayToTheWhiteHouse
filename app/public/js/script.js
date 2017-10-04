@@ -7,10 +7,14 @@ document.addEventListener('DOMContentLoaded', function () {
     let inputQuery = document.querySelector("input[name='query']");
     let inputMinDate = document.querySelector(".datepicker[data-type-date='min']");
     let inputMaxDate = document.querySelector(".datepicker[data-type-date='max']");
-    let sortButtons = document.querySelectorAll("button.arrow");
-    let inputSort = {};
+    let sortButtons = document.querySelectorAll("span.arrow");
+    let inputTypeSort;
+    let inputOrderSort;
     let meterFilterButtons = document.querySelectorAll("button[data-meter-filter]");
     let inputMeterFilter = [];
+    let changePageButtons = document.querySelectorAll("button[data-change-page]");
+    let from = 0;
+    let removeFilters = document.querySelector("img.remove-filters");
 
     emitQuery();
 
@@ -30,12 +34,21 @@ document.addEventListener('DOMContentLoaded', function () {
 
     for (let i = 0; i < sortButtons.length; i++) {
         sortButtons[i].addEventListener('click', function () {
+            let activeSort = document.querySelector("span.arrow.active");
+            if (activeSort !== null && activeSort !== this) {
+                activeSort.classList.remove("active");
+            }
             this.classList.toggle("active");
-            document.querySelector(".arrow[data-type-sort='" + this.dataset.typeSort + "'][data-order-sort='" + (this.dataset.orderSort === "desc" ? "asc" : "desc") + "']").classList.remove("active");
+            if (document.querySelector("span.arrow.active") === null) {
+                document.querySelector("span.arrow[data-type-sort='_score'][data-order-sort='desc']").classList.add("active");
+            }
+
             if (this.classList.contains("active")) {
-                inputSort[this.dataset.typeSort] = this.dataset.orderSort;
+                inputTypeSort = this.dataset.typeSort;
+                inputOrderSort = this.dataset.orderSort;
             } else {
-                delete inputSort[this.dataset.typeSort];
+                inputTypeSort = "";
+                inputOrderSort = "";
             }
             emitQuery();
         });
@@ -54,16 +67,51 @@ document.addEventListener('DOMContentLoaded', function () {
         })
     }
 
+    for (let i = 0; i < changePageButtons.length; i++) {
+        changePageButtons[i].addEventListener('click', function () {
+            if (this.dataset.changePage === 'previous') {
+                from -= 20;
+            } else if (this.dataset.changePage === 'next') {
+                from += 20;
+            }
+            changePageButtons[0].disabled = from === 0;
+            emitQuery();
+        })
+    }
+
+    removeFilters.addEventListener("click", function() {
+        inputMinDate.value = "";
+        inputMaxDate.value = "";
+        inputTypeSort = "";
+        inputOrderSort = "";
+        document.querySelector("span.arrow.active").classList.remove("active");
+        document.querySelector("span.arrow[data-type-sort='_score'][data-order-sort='desc']").classList.add("active");
+        inputMeterFilter = [];
+        for (let i = 0; i < meterFilterButtons.length; i++) {
+            meterFilterButtons[i].classList.remove("active");
+        }
+        emitQuery();
+    });
+
     socket.on('loadFacts', function (facts) {
+        let size = facts.length;
+        if (size === 21) {
+            facts.splice(20, 1);
+        }
+        changePageButtons[1].disabled = size !== 21;
         document.querySelector(".facts").innerHTML = twig({ref: 'facts'}).render({facts: facts});
+        document.body.scrollTop = 0;
+        document.documentElement.scrollTop = 0;
     });
 
     function emitQuery() {
         socket.emit('getFacts', {
             inputQuery: inputQuery.value,
             inputDate: {min: inputMinDate.value, max: inputMaxDate.value},
-            inputSort: inputSort,
-            inputMeterFilter: inputMeterFilter
+            inputTypeSort: inputTypeSort,
+            inputOrderSort: inputOrderSort,
+            inputMeterFilter: inputMeterFilter,
+            from: from
         });
     }
 });

@@ -49,18 +49,18 @@ app.get('/search/:query', (request, response) => {
 
 io.on('connection', function (socket) {
     socket.on('getFacts', function (data) {
-        executeFactQuery(callBackLoadFacts, data.inputQuery, data.inputDate, data.inputSort, data.inputMeterFilter);
+        executeFactQuery(callBackLoadFacts, data.inputQuery, data.inputDate, data.inputTypeSort, data.inputOrderSort, data.inputMeterFilter, data.from);
     });
 });
 
-function executeFactQuery(cb, inputQuery, inputDate = {}, inputSort = {}, inputMeterFilter = [], response = null) {
-    let query = buildQuery(inputQuery, inputDate, inputSort, inputMeterFilter);
+function executeFactQuery(cb, inputQuery, inputDate = {}, inputTypeSort = "", inputOrderSort = "", inputMeterFilter = [], from = 0, response = null) {
+    let query = buildQuery(inputQuery, inputDate, inputTypeSort, inputOrderSort, inputMeterFilter, from);
     client.search(query).then(function (data) {
         cb(data.hits.hits, inputQuery, response);
     });
 }
 
-function buildQuery(inputQuery, inputDate, inputSort, inputMeterFilter) {
+function buildQuery(inputQuery, inputDate, inputTypeSort, inputOrderSort, inputMeterFilter, from) {
     inputQuery = inputQuery.trim();
     let match = {};
     if (inputQuery.length === 0) {
@@ -96,19 +96,17 @@ function buildQuery(inputQuery, inputDate, inputSort, inputMeterFilter) {
         date.lt = inputDate.max;
     }
 
-    let sort = [];
-    for (let key in inputSort) {
-        switch (key) {
-            case "date":
-                sort.push({date: {order: inputSort[key]}});
-                break;
-            case "_score":
-                sort.push({_score: {order: inputSort[key]}});
-                break;
-            case "confidence":
-                sort.push({confidence: {order: inputSort[key]}});
-                break;
-        }
+    let sort;
+    switch (inputTypeSort) {
+        case "date":
+            sort = {date: {order: inputOrderSort}};
+            break;
+        case "_score":
+            sort = {_score: {order: inputOrderSort}};
+            break;
+        case "confidence":
+            sort = {confidence: {order: inputOrderSort}};
+            break;
     }
 
     let filter = [];
@@ -117,8 +115,8 @@ function buildQuery(inputQuery, inputDate, inputSort, inputMeterFilter) {
     }
 
     return {
-        from: 0,
-        size: 100,
+        from: from,
+        size: 21,
         body: {
             sort: sort,
             query: {
