@@ -1,6 +1,6 @@
 {% if facts is not empty %}
     {% for key, fact in facts %}
-        {{ (key is even) ? '<div class="wrapper">' : '' }}
+        {{ (key is divisibleby(3)) ? '<div class="wrapper">' : '' }}
         <div class="fact">
             <a href="{{ fact.url }}" target="_blank">
                 <div class="wrapper-left">
@@ -12,7 +12,7 @@
                 <p>{{ fact.statement }}</p>
             </a>
         </div>
-        {{ (key is odd) ? '</div>' : '' }}
+        {{ (key in [2, 5, 8, 11, 14, 17]) ? '</div>' : '' }}
     {% endfor %}
 {% else %}
     <p>Any document correspond to your query.</p>

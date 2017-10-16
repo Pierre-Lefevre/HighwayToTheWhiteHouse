@@ -1,90 +1,17 @@
 {% extends './base.twig' %}
 
 {% block body %}
-    <div class="second-nav">
-        <div class="filters-forms">
-            <form action="/search" method="post" class="search-bar">
-                <input type="search" name="query" placeholder="What are you looking for ?"
-                       value="{{ query | default('') }}">
-                <button type="submit">Search</button>
-            </form>
-            <form action="" method="post" class="date-form">
-                <label for="from">From</label>
-                <input type="text" class="datepicker" data-type-date="min" placeholder="YYYY-MM-DD" id="from">
-                <label for="to">To</label>
-                <input type="text" class="datepicker" data-type-date="max" placeholder="YYYY-MM-DD" id="to">
-            </form>
-        </div>
-        <img class="remove-filters" src="/assets/img/icones/reload.svg" alt="Remove filters and refresh">
-        <div class="criterion-nav">
-            <div class="order">
-                <img src="/assets/img/icones/order.svg" alt="Order icone">
-                <button>
-                    Relevance
-                    <div>
-                        <span class="arrow arrow-up active" data-type-sort="_score" data-order-sort="desc"></span>
-                        <span class="arrow arrow-down" data-type-sort="_score" data-order-sort="asc"></span>
-                    </div>
-                </button>
-                <button>
-                    Date
-                    <div>
-                        <span class="arrow arrow-up" data-type-sort="date" data-order-sort="desc"></span>
-                        <span class="arrow arrow-down" data-type-sort="date" data-order-sort="asc"></span>
-                    </div>
-                </button>
-                <button>
-                    Confidence
-                    <div>
-                        <span class="arrow arrow-up" data-type-sort="confidence" data-order-sort="desc"></span>
-                        <span class="arrow arrow-down" data-type-sort="confidence" data-order-sort="asc"></span>
-                    </div>
-                </button>
-                {#<div>
-                    <span>Date</span>
-                    <div>
-                        <button class="arrow arrow-up" data-type-sort="date" data-order-sort="desc"></button>
-                        <button class="arrow arrow-down" data-type-sort="date" data-order-sort="asc"></button>
-                    </div>
-                </div>
-                <div>
-                    <span>Relevance</span>
-                    <div>
-                        <button class="arrow arrow-up" data-type-sort="_score" data-order-sort="desc"></button>
-                        <button class="arrow arrow-down" data-type-sort="_score" data-order-sort="asc"></button>
-                    </div>
-                </div>
-                <div>
-                    <span>Confidence</span>
-                    <div>
-                        <button class="arrow arrow-up" data-type-sort="confidence" data-order-sort="desc"></button>
-                        <button class="arrow arrow-down" data-type-sort="confidence" data-order-sort="asc"></button>
-                    </div>
-                </div>#}
-            </div>
-            <div class="filter">
-                <img src="/assets/img/icones/filter.svg" alt="Filter icone">
-                <button data-meter-filter="full_flop">Full flop</button>
-                <button data-meter-filter="half_flip">Half flip</button>
-                <button data-meter-filter="no_flip">No flip</button>
-                <button data-meter-filter="pants_on_fire">Pants on Fire</button>
-                <button data-meter-filter="false">False</button>
-                <button data-meter-filter="mostly_false">Mostly false</button>
-                <button data-meter-filter="half_true">Half true</button>
-                <button data-meter-filter="mostly_true">Mostly true</button>
-                <button data-meter-filter="true">True</button>
-            </div>
-        </div>
-    </div>
     <div class="facts">
         {% if facts %}
             {% include '../../public/template/facts.twig' %}
         {% endif %}
     </div>
-    <button data-change-page="previous" disabled>
-        previous
-    </button>
-    <button data-change-page="next">
-        next
-    </button>
+    <div class="pagination">
+        <button data-change-page="previous" disabled>
+            <
+        </button>
+        <button data-change-page="next">
+            >
+        </button>
+    </div>
 {% endblock %}

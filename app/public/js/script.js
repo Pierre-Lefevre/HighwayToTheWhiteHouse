@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', function () {
     let inputQuery = document.querySelector("input[name='query']");
     let inputMinDate = document.querySelector(".datepicker[data-type-date='min']");
     let inputMaxDate = document.querySelector(".datepicker[data-type-date='max']");
+    let orderButtons = document.querySelectorAll(".order button");
     let sortButtons = document.querySelectorAll("span.arrow");
     let inputTypeSort;
     let inputOrderSort;
@@ -14,7 +15,7 @@ document.addEventListener('DOMContentLoaded', function () {
     let inputMeterFilter = [];
     let changePageButtons = document.querySelectorAll("button[data-change-page]");
     let from = 0;
-    let removeFilters = document.querySelector("img.remove-filters");
+    let removeFilters = document.querySelector("button.remove-filters");
 
     emitQuery();
 
@@ -39,6 +40,10 @@ document.addEventListener('DOMContentLoaded', function () {
                 activeSort.classList.remove("active");
             }
             this.classList.toggle("active");
+            for (let i = 0; i < orderButtons.length; i++) {
+                orderButtons[i].classList.remove("active");
+            }
+            this.parentNode.parentNode.classList.toggle("active");
             if (document.querySelector("span.arrow.active") === null) {
                 document.querySelector("span.arrow[data-type-sort='_score'][data-order-sort='desc']").classList.add("active");
             }
@@ -84,8 +89,12 @@ document.addEventListener('DOMContentLoaded', function () {
         inputMaxDate.value = "";
         inputTypeSort = "";
         inputOrderSort = "";
+        for (let i = 0; i < orderButtons.length; i++) {
+            orderButtons[i].classList.remove("active");
+        }
         document.querySelector("span.arrow.active").classList.remove("active");
         document.querySelector("span.arrow[data-type-sort='_score'][data-order-sort='desc']").classList.add("active");
+        document.querySelector("span.arrow[data-type-sort='_score'][data-order-sort='desc']").parentNode.parentNode.classList.add("active");
         inputMeterFilter = [];
         for (let i = 0; i < meterFilterButtons.length; i++) {
             meterFilterButtons[i].classList.remove("active");

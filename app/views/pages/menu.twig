@@ -1,16 +1,72 @@
 <nav class="main-nav">
-	<a href="">
-		<img src="/assets/img/logo/logo.png" alt="Logo Highway To The White House">
-	</a>
-	<ul>
-		<li>
-			<a href="">Home</a>
-		</li>
-		<li>
-			<a href="">All Facts</a>
-		</li>
-		<li>
-			<a href="">About</a>
-		</li>
-	</ul>
+    <div class="logo">
+        <a href="">
+            <img src="/assets/img/logo/logo.png" alt="Logo Highway To The White House">
+        </a>
+    </div>
+    <div class="filters-nav">
+        <div class="filters-forms">
+            <form action="/search" method="post" class="search-bar">
+                <input type="search" name="query" placeholder="What are you looking for ?"
+                       value="{{ query | default('') }}">
+                <button type="submit">Search</button>
+            </form>
+            <div class="wrapper-date-forms">
+                <form action="" method="post" class="date-form-from">
+                    <label for="from">From</label>
+                    <input type="text" class="datepicker" data-type-date="min" placeholder="YYYY-MM-DD" id="from">
+                </form>
+                <form action="" method="post" class="date-form-to">
+                    <label for="to">To</label>
+                    <input type="text" class="datepicker" data-type-date="max" placeholder="YYYY-MM-DD" id="to">
+                </form>
+            </div>
+        </div>
+        <div class="criterion-nav">
+            <div class="order">
+                <img src="/assets/img/icones/order.svg" alt="Order icone">
+                <button class="active">
+                    Relevance
+                    <div>
+                        <span class="arrow arrow-up active" data-type-sort="_score" data-order-sort="desc"></span>
+                        <span class="arrow arrow-down" data-type-sort="_score" data-order-sort="asc"></span>
+                    </div>
+                </button>
+                <button>
+                    Date
+                    <div>
+                        <span class="arrow arrow-up" data-type-sort="date" data-order-sort="desc"></span>
+                        <span class="arrow arrow-down" data-type-sort="date" data-order-sort="asc"></span>
+                    </div>
+                </button>
+                <button>
+                    Confidence
+                    <div>
+                        <span class="arrow arrow-up" data-type-sort="confidence" data-order-sort="desc"></span>
+                        <span class="arrow arrow-down" data-type-sort="confidence" data-order-sort="asc"></span>
+                    </div>
+                </button>
+            </div>
+            <div class="wrapper-filter-remove">
+                <div class="filter">
+                    <div class="wrapper-filter-buttons">
+                        <img src="/assets/img/icones/filter.svg" alt="Filter icone">
+                        <button data-meter-filter="full_flop">Full flop</button>
+                        <button data-meter-filter="half_flip">Half flip</button>
+                        <button data-meter-filter="no_flip">No flip</button>
+                        <button data-meter-filter="pants_on_fire">Pants on Fire</button>
+                    </div>
+                    <div class="wrapper-filter-buttons">
+                        <button data-meter-filter="false">False</button>
+                        <button data-meter-filter="mostly_false">Mostly false</button>
+                        <button data-meter-filter="half_true">Half true</button>
+                        <button data-meter-filter="mostly_true">Mostly true</button>
+                        <button data-meter-filter="true">True</button>
+                    </div>
+                </div>
+
+                <button class="remove-filters">Remove filters</button>
+            </div>
+        </div>
+    </div>
 </nav>
