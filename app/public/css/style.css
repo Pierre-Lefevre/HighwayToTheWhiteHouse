@@ -39,13 +39,16 @@ button {
 .main-nav {
     position: fixed;
     top:0;
-    height: 150px;
+    /*height: 150px;*/
     display: flex;
 }
 
 /*** Logo ***/
 
 .main-nav .logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     width: 18vw;
     background-color: #22313F;
     box-shadow: 0 0 20px 1px rgba(0, 0, 0, 0.2);
@@ -56,6 +59,7 @@ button {
     height: auto;
     display: block;
     padding: 20px 50px;
+    margin: 0 auto;
 }
 
 /*** Navigation par filtre ***/
@@ -271,6 +275,7 @@ main {
 .fact {
     display: flex;
     flex-direction: row;
+    flex-grow: 1;
     justify-content: space-between;
     border: 1px solid #d1d7dc;
     background-color: #fff;
@@ -307,13 +312,13 @@ main {
     text-transform: uppercase;
 }
 
-.fact img:first-child {
-
-}
-
 .fact img {
     width: auto;
     height: 80px;
+}
+
+.wrapper-left img:first-child {
+    margin-right: 2rem;
 }
 
 .fact a {
@@ -363,7 +368,18 @@ main {
     .main-nav {
         position: fixed;
         top:0;
-        height: 230px;
+        /*height: 230px;*/
+    }
+
+    .search-bar input[type=search] {
+        -webkit-transition-property: none;
+        -moz-transition-property: none;
+        -o-transition-property: none;
+        transition-property: none;
+    }
+
+    .search-bar input[type=search]:focus {
+        width: 15rem;
     }
 
     .criterion-nav {
@@ -406,7 +422,7 @@ main {
     .main-nav {
         position: fixed;
         top:0;
-        height: 400px;
+        /*height: 400px;*/
         display: flex;
         flex-direction: column;
     }
@@ -414,10 +430,6 @@ main {
     .main-nav .logo {
         height: auto;
         width: 100vw;
-    }
-
-    .logo a {
-        margin-bottom: 1rem;
     }
 
     .logo img {
@@ -489,13 +501,21 @@ main {
         flex-direction: column;
         width: 100%;
     }
+
+    .fact {
+        margin-right: 0;
+    }
+
+    .wrapper:last-child .fact:first-child{
+        margin-bottom: 2rem;
+    }
 }
 
 @media screen and (max-width: 840px) {
     .main-nav {
         position: fixed;
         top:0;
-        height: 400px;
+        /*height: 400px;*/
         display: flex;
         flex-direction: column;
     }
@@ -504,10 +524,6 @@ main {
         height: auto;
         width: 100vw;
         margin: auto;
-    }
-
-    .logo a {
-        margin-bottom: 1rem;
     }
 
     .logo img {

@@ -16,20 +16,32 @@ document.addEventListener('DOMContentLoaded', function () {
     let changePageButtons = document.querySelectorAll("button[data-change-page]");
     let from = 0;
     let removeFilters = document.querySelector("button.remove-filters");
-
+    let nav = document.querySelector("nav");
+    let main = document.querySelector("main");
     emitQuery();
+    shiftMain();
+
+    window.addEventListener('resize', shiftMain);
+
+    function shiftMain() {
+        main.style.marginTop = nav.offsetHeight + "px";
+        console.log(nav.offsetHeight);
+    }
 
     formQuery.addEventListener("submit", function (e) {
         e.preventDefault();
+        from = 0;
         emitQuery();
         return false;
     });
 
     inputQuery.addEventListener("input", function () {
+        from = 0;
         emitQuery();
     });
 
     $(".datepicker").datepicker({dateFormat: 'yy-mm-dd'}).change(function () {
+        from = 0;
         emitQuery();
     });
 
@@ -55,6 +67,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 inputTypeSort = "";
                 inputOrderSort = "";
             }
+            from = 0;
             emitQuery();
         });
     }
@@ -68,6 +81,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 inputMeterFilter.splice(index, 1);
             }
             this.classList.toggle('active');
+            from = 0;
             emitQuery();
         })
     }
@@ -99,6 +113,7 @@ document.addEventListener('DOMContentLoaded', function () {
         for (let i = 0; i < meterFilterButtons.length; i++) {
             meterFilterButtons[i].classList.remove("active");
         }
+        from = 0;
         emitQuery();
     });
 
