@@ -7,9 +7,8 @@
     <div class="filters-nav">
         <div class="filters-forms">
             <form action="/search" method="post" class="search-bar">
-                <input type="search" name="query" placeholder="What are you looking for ?"
-                       value="{{ query | default('') }}">
-                <button type="submit">Search</button>
+                <input type="search" name="query" placeholder="What are you looking for ?" value="{{ query | default('') }}">
+				<div></div>
             </form>
             <div class="wrapper-date-forms">
                 <form action="" method="post" class="date-form-from">
@@ -25,27 +24,27 @@
         <div class="criterion-nav">
             <div class="order">
                 <img src="/assets/img/icones/order.svg" alt="Order icone">
-                <button class="active">
+                <div class="active">
                     Relevance
                     <div>
-                        <span class="arrow arrow-up active" data-type-sort="_score" data-order-sort="desc"></span>
-                        <span class="arrow arrow-down" data-type-sort="_score" data-order-sort="asc"></span>
+                        <button class="arrow arrow-up active" data-type-sort="_score" data-order-sort="desc"></button>
+                        <button class="arrow arrow-down" data-type-sort="_score" data-order-sort="asc"></button>
                     </div>
-                </button>
-                <button>
+                </div>
+                <div>
                     Date
                     <div>
-                        <span class="arrow arrow-up" data-type-sort="date" data-order-sort="desc"></span>
-                        <span class="arrow arrow-down" data-type-sort="date" data-order-sort="asc"></span>
+                        <button class="arrow arrow-up" data-type-sort="date" data-order-sort="desc"></button>
+                        <button class="arrow arrow-down" data-type-sort="date" data-order-sort="asc"></button>
                     </div>
-                </button>
-                <button>
+                </div>
+                <div>
                     Confidence
                     <div>
-                        <span class="arrow arrow-up" data-type-sort="confidence" data-order-sort="desc"></span>
-                        <span class="arrow arrow-down" data-type-sort="confidence" data-order-sort="asc"></span>
+                        <button class="arrow arrow-up" data-type-sort="confidence" data-order-sort="desc"></button>
+                        <button class="arrow arrow-down" data-type-sort="confidence" data-order-sort="asc"></button>
                     </div>
-                </button>
+                </div>
             </div>
             <div class="wrapper-filter-remove">
                 <div class="filter">
@@ -64,7 +63,6 @@
                         <button data-meter-filter="true">True</button>
                     </div>
                 </div>
-
                 <button class="remove-filters">Remove filters</button>
             </div>
         </div>

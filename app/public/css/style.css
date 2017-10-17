@@ -4,7 +4,7 @@
 html, body {
     margin: 0;
     padding: 0;
-    font-family: 'Raleway', sans-serif;
+    font-family: Arial, sans-serif;
     font-weight: 400;
 }
 
@@ -14,6 +14,10 @@ html, body {
 
 h2 {
     padding: 20px;
+}
+
+a, button, input {
+    outline: 0;
 }
 
 a {
@@ -26,6 +30,7 @@ button {
     color: #22313F;
     height: 40px;
     cursor: pointer;
+    font-family: Arial, sans-serif;
 }
 
 .remove-filters {
@@ -38,8 +43,7 @@ button {
 
 .main-nav {
     position: fixed;
-    top:0;
-    /*height: 150px;*/
+    top: 0;
     display: flex;
 }
 
@@ -98,6 +102,10 @@ input::-webkit-input-placeholder {
     padding: 0 10px;
 }
 
+.search-bar {
+    display: flex;
+}
+
 .search-bar input[type=search] {
     width: 15rem;
     -webkit-transition: width 0.4s ease-in-out;
@@ -108,13 +116,12 @@ input::-webkit-input-placeholder {
     width: 30rem;
 }
 
-.search-bar button {
-    width : 5rem;
-    background: #22313F;
+.search-bar div {
     border: 0;
     border-left: 1px solid white;
-    color: white;
-
+    background: #22313F url("/assets/img/icones/loupe.png") no-repeat center;
+    background-size: auto 60%;
+    width: 40px;
 }
 
 .wrapper-date-forms {
@@ -138,7 +145,7 @@ input::-webkit-input-placeholder {
     height: 40px;
 }
 
-.filter,.order {
+.filter, .order {
     display: flex;
 }
 
@@ -155,11 +162,13 @@ input::-webkit-input-placeholder {
     flex-direction: row;
 }
 
-.order button {
-    cursor: default;
+.order > div {
+    padding: 0 8px;
+    font-size: 13.33px;
+    color: #22313F;
 }
 
-.order button span {
+.order button {
     cursor: pointer;
 }
 
@@ -167,7 +176,7 @@ input::-webkit-input-placeholder {
     margin-right: 10px;
 }
 
-.criterion-nav .order button, .criterion-nav .filter button {
+.criterion-nav .order > div, .criterion-nav .filter button {
     margin-right: 5px;
     border: 1px solid #d1d7dc;
     background-color: #fff;
@@ -177,39 +186,39 @@ input::-webkit-input-placeholder {
     align-items: center;
 }
 
-.order button.active, .order button:hover {
+.order > div.active, .order > div:hover {
     background-color: #22313F;
     color: white;
 }
 
-.order button.active span.arrow-up, .order button:hover span.arrow-up {
+.order > div.active button.arrow-up, .order > div:hover button.arrow-up {
     border-bottom-color: white;
 }
 
-.order button.active span.arrow-down, .order button:hover span.arrow-down {
+.order > div.active button.arrow-down, .order > div:hover button.arrow-down {
     border-top-color: white;
 }
 
-.criterion-nav .order button div {
+.criterion-nav .order > div div {
     display: flex;
     flex-direction: column;
     margin-left: 1rem;
 }
 
-span.arrow {
+button.arrow {
     padding: 0;
     background-color: transparent;
 }
 
-.order button span.arrow-up.active {
+.order > div button.arrow-up.active {
     border-bottom-color: #DCB621;
 }
 
-.order button span.arrow-down.active {
+.order > div button.arrow-down.active {
     border-top-color: #DCB621;
 }
 
-.order button span.arrow-up {
+.order > div button.arrow-up {
     width: 0;
     height: 0;
     border-top: none;
@@ -219,7 +228,7 @@ span.arrow {
     margin-bottom: 5px;
 }
 
-.order button span.arrow-down {
+.order > div button.arrow-down {
     width: 0;
     height: 0;
     border-bottom: none;
@@ -256,7 +265,7 @@ main {
 /*** Facts ***/
 
 .facts {
-    padding: 2rem 4rem;
+    padding: 2rem;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
@@ -268,7 +277,7 @@ main {
     width: 100%;
 }
 
-.wrapper:last-child .fact{
+.wrapper:last-child .fact {
     margin-bottom: 0;
 }
 
@@ -367,8 +376,7 @@ main {
 @media screen and (max-width: 1380px) {
     .main-nav {
         position: fixed;
-        top:0;
-        /*height: 230px;*/
+        top: 0;
     }
 
     .search-bar input[type=search] {
@@ -421,8 +429,7 @@ main {
 @media screen and (max-width: 980px) {
     .main-nav {
         position: fixed;
-        top:0;
-        /*height: 400px;*/
+        top: 0;
         display: flex;
         flex-direction: column;
     }
@@ -435,6 +442,7 @@ main {
     .logo img {
         width: 300px;
     }
+
     .filters-nav {
         width: 100vw;
     }
@@ -506,7 +514,7 @@ main {
         margin-right: 0;
     }
 
-    .wrapper:last-child .fact:first-child{
+    .wrapper:last-child .fact:first-child {
         margin-bottom: 2rem;
     }
 }
@@ -514,8 +522,7 @@ main {
 @media screen and (max-width: 840px) {
     .main-nav {
         position: fixed;
-        top:0;
-        /*height: 400px;*/
+        top: 0;
         display: flex;
         flex-direction: column;
     }
@@ -529,6 +536,7 @@ main {
     .logo img {
         width: 300px;
     }
+
     .filters-nav {
         width: 100vw;
     }

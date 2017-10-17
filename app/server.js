@@ -26,25 +26,10 @@ app.use(bodyParser.json());
 let callBackLoadFacts = function (facts, inputQuery, response) {
     io.sockets.emit('loadFacts', facts.map((jsonFact) => new Fact(jsonFact._source).attributes()));
 };
-let callBackPagesIndex = function (facts, inputQuery, response) {
-    response.render('pages/index', {facts: facts.map((jsonFact) => new Fact(jsonFact._source)), query: inputQuery});
-};
 
 // Routes
 app.get('/', (request, response) => {
     response.render('pages/index');
-});
-
-app.post('/search', (request, response) => {
-    if (request.body.query === undefined || request.body.query === '') {
-        response.redirect('/');
-    } else {
-        response.redirect('/search/' + encodeURIComponent(request.body.query));
-    }
-});
-
-app.get('/search/:query', (request, response) => {
-    executeFactQuery(callBackPagesIndex, request.params.query, undefined, undefined, response);
 });
 
 io.on('connection', function (socket) {
@@ -73,20 +58,6 @@ function buildQuery(inputQuery, inputDate, inputTypeSort, inputOrderSort, inputM
             fuzziness: "AUTO"
         };
     }
-    /*let query = "";
-    if (inputQuery.length === 0) {
-        query = "*";
-    } else {
-        inputQuery.replace(/\s\s+/g, ' ').split(" ").forEach(function (element, index, array) {
-            query += element;
-            if (["AND", "OR", "NOT"].indexOf(element) === -1) {
-                //query += "~3";
-            }
-            if (index < array.length - 1) {
-                query += " ";
-            }
-        });
-    }*/
 
     let date = {};
     if (inputDate.min !== "") {
@@ -116,7 +87,7 @@ function buildQuery(inputQuery, inputDate, inputTypeSort, inputOrderSort, inputM
 
     return {
         from: from,
-        size: 21,
+        size: 22,
         body: {
             sort: sort,
             query: {
@@ -129,13 +100,6 @@ function buildQuery(inputQuery, inputDate, inputTypeSort, inputOrderSort, inputM
                             }
                         }
                     ],
-                    /*must: {
-                        query_string: {
-                            fields: ["author", "statement^3"],
-                            query: query,
-                            default_operator: "AND"
-                        }
-                    },*/
                     filter: filter
                 }
             }

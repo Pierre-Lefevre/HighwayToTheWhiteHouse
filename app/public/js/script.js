@@ -3,12 +3,13 @@ document.addEventListener('DOMContentLoaded', function () {
     let socket = io.connect('http://localhost:8080');
     twig({id: 'facts', href: '/assets/template/facts.twig', async: false});
 
-    let formQuery = document.querySelector(".search-bar");
+    let nav = document.querySelector("nav");
+    let main = document.querySelector("main");
     let inputQuery = document.querySelector("input[name='query']");
     let inputMinDate = document.querySelector(".datepicker[data-type-date='min']");
     let inputMaxDate = document.querySelector(".datepicker[data-type-date='max']");
-    let orderButtons = document.querySelectorAll(".order button");
-    let sortButtons = document.querySelectorAll("span.arrow");
+    let orderButtons = document.querySelectorAll(".order > div");
+    let sortButtons = document.querySelectorAll("button.arrow");
     let inputTypeSort;
     let inputOrderSort;
     let meterFilterButtons = document.querySelectorAll("button[data-meter-filter]");
@@ -16,24 +17,15 @@ document.addEventListener('DOMContentLoaded', function () {
     let changePageButtons = document.querySelectorAll("button[data-change-page]");
     let from = 0;
     let removeFilters = document.querySelector("button.remove-filters");
-    let nav = document.querySelector("nav");
-    let main = document.querySelector("main");
-    emitQuery();
+
     shiftMain();
+    emitQuery();
 
     window.addEventListener('resize', shiftMain);
 
     function shiftMain() {
         main.style.marginTop = nav.offsetHeight + "px";
-        console.log(nav.offsetHeight);
     }
-
-    formQuery.addEventListener("submit", function (e) {
-        e.preventDefault();
-        from = 0;
-        emitQuery();
-        return false;
-    });
 
     inputQuery.addEventListener("input", function () {
         from = 0;
@@ -47,7 +39,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     for (let i = 0; i < sortButtons.length; i++) {
         sortButtons[i].addEventListener('click', function () {
-            let activeSort = document.querySelector("span.arrow.active");
+            let activeSort = document.querySelector("button.arrow.active");
             if (activeSort !== null && activeSort !== this) {
                 activeSort.classList.remove("active");
             }
@@ -56,8 +48,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 orderButtons[i].classList.remove("active");
             }
             this.parentNode.parentNode.classList.toggle("active");
-            if (document.querySelector("span.arrow.active") === null) {
-                document.querySelector("span.arrow[data-type-sort='_score'][data-order-sort='desc']").classList.add("active");
+            if (document.querySelector("button.arrow.active") === null) {
+                document.querySelector("button.arrow[data-type-sort='_score'][data-order-sort='desc']").classList.add("active");
             }
 
             if (this.classList.contains("active")) {
@@ -98,7 +90,7 @@ document.addEventListener('DOMContentLoaded', function () {
         })
     }
 
-    removeFilters.addEventListener("click", function() {
+    removeFilters.addEventListener("click", function () {
         inputMinDate.value = "";
         inputMaxDate.value = "";
         inputTypeSort = "";
@@ -106,9 +98,9 @@ document.addEventListener('DOMContentLoaded', function () {
         for (let i = 0; i < orderButtons.length; i++) {
             orderButtons[i].classList.remove("active");
         }
-        document.querySelector("span.arrow.active").classList.remove("active");
-        document.querySelector("span.arrow[data-type-sort='_score'][data-order-sort='desc']").classList.add("active");
-        document.querySelector("span.arrow[data-type-sort='_score'][data-order-sort='desc']").parentNode.parentNode.classList.add("active");
+        document.querySelector("button.arrow.active").classList.remove("active");
+        document.querySelector("button.arrow[data-type-sort='_score'][data-order-sort='desc']").classList.add("active");
+        document.querySelector("button.arrow[data-type-sort='_score'][data-order-sort='desc']").parentNode.parentNode.classList.add("active");
         inputMeterFilter = [];
         for (let i = 0; i < meterFilterButtons.length; i++) {
             meterFilterButtons[i].classList.remove("active");
@@ -119,10 +111,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
     socket.on('loadFacts', function (facts) {
         let size = facts.length;
-        if (size === 21) {
-            facts.splice(20, 1);
+        if (size === 22) {
+            facts.splice(21, 1);
         }
-        changePageButtons[1].disabled = size !== 21;
+        changePageButtons[1].disabled = size !== 22;
         document.querySelector(".facts").innerHTML = twig({ref: 'facts'}).render({facts: facts});
         document.body.scrollTop = 0;
         document.documentElement.scrollTop = 0;
