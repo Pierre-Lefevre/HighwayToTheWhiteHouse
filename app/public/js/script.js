@@ -5,6 +5,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
     let nav = document.querySelector("nav");
     let main = document.querySelector("main");
+    let toggleFitlersButton = document.getElementById("toggle-filters");
+    let filtersDiv = document.querySelector(".filters-nav");
     let inputQuery = document.querySelector("input[name='query']");
     let inputMinDate = document.querySelector(".datepicker[data-type-date='min']");
     let inputMaxDate = document.querySelector(".datepicker[data-type-date='max']");
@@ -18,7 +20,12 @@ document.addEventListener('DOMContentLoaded', function () {
     let from = 0;
     let removeFilters = document.querySelector("button.remove-filters");
 
-    shiftMain();
+    toggleFitlersButton.addEventListener("click", function () {
+        toggleFitlersButton.innerText = toggleFitlersButton.innerText === "+ Filters" ? "- Filters" : "+ Filters";
+        filtersDiv.classList.toggle("show");
+        shiftMain();
+    });
+
     emitQuery();
 
     window.addEventListener('resize', shiftMain);
@@ -130,4 +137,6 @@ document.addEventListener('DOMContentLoaded', function () {
             from: from
         });
     }
+
+    setTimeout(shiftMain, 0);
 });

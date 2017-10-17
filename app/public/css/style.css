@@ -45,6 +45,8 @@ button {
     position: fixed;
     top: 0;
     display: flex;
+    width: 100%;
+    box-shadow: 0 0 20px 1px rgba(0, 0, 0, 0.2);
 }
 
 /*** Logo ***/
@@ -55,7 +57,7 @@ button {
     justify-content: center;
     width: 18vw;
     background-color: #22313F;
-    box-shadow: 0 0 20px 1px rgba(0, 0, 0, 0.2);
+    position: relative;
 }
 
 .logo img {
@@ -66,14 +68,21 @@ button {
     margin: 0 auto;
 }
 
+#toggle-filters {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    margin: 1rem;
+    display: none;
+}
+
 /*** Navigation par filtre ***/
 
 .filters-nav {
-    width: 82vw;
+    flex-grow: 1;
     padding: 1rem;
     background-color: #f0f3f5;
     border-bottom: 1px solid #d1d7dc;
-    box-shadow: 0 0 20px 1px rgba(0, 0, 0, 0.2);
 }
 
 /* Barre de recherche & form date */
@@ -81,7 +90,6 @@ button {
 .filters-forms {
     display: flex;
     justify-content: space-between;
-    margin-right: 1rem;
 }
 
 .wrapper-date-forms form {
@@ -136,7 +144,6 @@ input::-webkit-input-placeholder {
 
 .criterion-nav {
     margin-top: 2rem;
-    margin-right: 1rem;
     display: flex;
     flex-direction: row;
 }
@@ -256,7 +263,6 @@ button.arrow {
 /***** Contenu principal *****/
 
 main {
-    margin-top: 150px;
     background-color: #f0f3f5;
     min-height: 100vh;
     padding-bottom: 2rem;
@@ -420,10 +426,6 @@ main {
         margin-top: 2rem;
         align-self: flex-end;
     }
-
-    main {
-        margin-top: 230px;
-    }
 }
 
 @media screen and (max-width: 980px) {
@@ -436,15 +438,23 @@ main {
 
     .main-nav .logo {
         height: auto;
-        width: 100vw;
+        width: 100%;
     }
 
     .logo img {
         width: 300px;
     }
 
+    #toggle-filters {
+        display: initial;
+    }
+
     .filters-nav {
-        width: 100vw;
+        display: none;
+    }
+
+    .filters-nav.show {
+        display: initial;
     }
 
     .filters-forms {
@@ -500,10 +510,6 @@ main {
         margin-top: 2rem;
     }
 
-    main {
-        margin-top: 400px;
-    }
-
     .wrapper {
         display: flex;
         flex-direction: column;
@@ -528,17 +534,11 @@ main {
     }
 
     .main-nav .logo {
-        height: auto;
-        width: 100vw;
         margin: auto;
     }
 
     .logo img {
         width: 300px;
-    }
-
-    .filters-nav {
-        width: 100vw;
     }
 
     .filters-forms {
