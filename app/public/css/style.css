@@ -552,7 +552,7 @@ main {
         flex-direction: row;
     }
 
-    .date-form {
+    .wrapper-date-forms form {
         margin-left: 0;
     }
 
