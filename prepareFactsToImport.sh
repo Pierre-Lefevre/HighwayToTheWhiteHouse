@@ -1,7 +1,13 @@
 #!/bin/bash
-# ./prepareFactsToImport.sh facts.json > import.json
+# ./prepareFactsToImport.sh facts.json
 
-rm import.json
+file="import.json"
+
+if [ -f "$file" ]; then
+    rm "$file"
+fi
+
+touch "$file"
 
 sed -i 's/\r//g' $1
 
@@ -15,6 +21,6 @@ fi
 
 while IFS='' read -r line || [[ -n "$line" ]]; do
 	((id++))
-	echo "{ \"index\" : { \"_index\" : \"highway_to_the_white_house\", \"_type\" : \"fact\", \"_id\" : \"$id\" } }"
-	echo "$line" | sed 's|\},$|\}|g'
+	echo "{ \"index\" : { \"_index\" : \"highway_to_the_white_house\", \"_type\" : \"fact\", \"_id\" : \"$id\" } }" >> "$file"
+	echo "$line" | sed 's|\},$|\}|g' >> "$file"
 done < "$1"

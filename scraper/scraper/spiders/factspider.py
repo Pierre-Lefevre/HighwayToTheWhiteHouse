@@ -12,7 +12,7 @@ from datetime import datetime
 class Factspider(scrapy.Spider):
 	name = 'factspider'
 	start_urls = ['http://www.politifact.com/truth-o-meter/statements/']
-	confidence = {"true": 9, "mostly_true": 8, "half_true": 7, "mostly_false": 6, "false": 5, "pants_on_fire": 4, "no_flip": 3, "half_flip": 2, "full_flop": 1}
+	confidence = {"true": 9, "no_flip": 8, "mostly_true": 7, "half_true": 6, "half_flip": 5, "mostly_false": 4, "false": 3, "full_flop": 2, "pants_on_fire": 1}
 
 	def parse(self, response):
 		for current_fact in response.xpath('//div[contains(concat(" ", @class, " "), " scoretable__item ")]'):

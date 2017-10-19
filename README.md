@@ -17,7 +17,7 @@
 
 ## Divers
 
-- Pour convertir un fichier JSON Scrapy en JSON Elasticsearch, lancez (dans un bash) : `./prepareFactsToImport.sh facts.json > import.json`**
+- Pour convertir un fichier JSON Scrapy en JSON Elasticsearch, lancez (dans un bash) : `./prepareFactsToImport.sh facts.json`**
 - Pour recharger toutes les données d'Elasticsearch, lancez (dans un bash) : `./reloadFactsInElastic.sh`**
 
 ** commandes à exécuter depuis la racine du projet
