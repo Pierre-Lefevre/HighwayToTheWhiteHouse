@@ -62,9 +62,9 @@ button {
 
 .logo img {
     width: 100%;
-    height: auto;
+    height: 100%;
     display: block;
-    padding: 20px 50px;
+    padding: 10px 40px;
     margin: 0 auto;
 }
 
@@ -437,12 +437,16 @@ main {
     }
 
     .main-nav .logo {
-        height: auto;
+        height: 100px;
         width: 100%;
     }
 
+    .logo a {
+        height: 100%;
+    }
+
     .logo img {
-        width: 300px;
+        padding: 10px;
     }
 
     #toggle-filters {
@@ -535,10 +539,6 @@ main {
 
     .main-nav .logo {
         margin: auto;
-    }
-
-    .logo img {
-        width: 300px;
     }
 
     .filters-forms {
